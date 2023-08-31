@@ -7,7 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Setter
 @Getter
@@ -16,11 +22,13 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+//    @Column(nullable = false, unique = true)
+	private String username;
     private String name;
     @Column(nullable = false)
     private String lastname;
@@ -35,4 +43,21 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private Set<Role> roles;
+    
+    
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+      return List.of(new SimpleGrantedAuthority(("ADMIN")));
+    }
+    public boolean isAccountNonExpired() {
+       return true;
+    }
+    public boolean isAccountNonLocked() {
+       return true;
+    }
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    public boolean isEnabled() {
+        return true;
+    }
 }
