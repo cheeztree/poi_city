@@ -31,6 +31,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests (authRequest ->
 				authRequest
 				.requestMatchers("/auth/**").permitAll()
+//				.requestMatchers("/users/**").permitAll()
 				.anyRequest().authenticated()
 				)
 //				.formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH

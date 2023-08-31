@@ -11,6 +11,9 @@ import poicity.dto.UserDTO;
 
 //import org.springframework.security.core.userdetails.User;
 import poicity.entity.User;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -27,11 +30,16 @@ public class AuthServiceImpl implements AuthService{
 	private final UserRepository userRepo;
 	private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
 	@Override
 	public AuthResponse login(LoginDTO request) {
-		// TODO Auto-generated method stub
-		return null;
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        UserDetails user = userRepo.findByUsername(request.getUsername()).orElseThrow();
+        String token = jwtService.getToken(user);
+        return AuthResponse.builder()
+            .token(token)
+            .build();
 	}
 
 	@Override

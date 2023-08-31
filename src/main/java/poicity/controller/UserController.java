@@ -57,7 +57,7 @@ public class UserController {
 	public ResponseEntity<List<User>> getAll() {
 		List<User> listaUser = userRepo.findAll();
 		
-		return new ResponseEntity<>(listaUser, HttpStatus.CREATED);
+		return new ResponseEntity<>(listaUser, HttpStatus.OK);
 	}
 	
 	@PutMapping("update")

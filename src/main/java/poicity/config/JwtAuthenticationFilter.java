@@ -3,6 +3,9 @@ package poicity.config;
 import java.io.IOException;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -27,10 +30,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		
 		final String token = getTokenFromRquest(request);
+		final String username;
 		
 		if(token == null){
 			filterChain.doFilter(request, response);
 			return;
+		}
+		
+		username = jwtService.getUsernameFromToken(token);
+		
+		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+			
+			if(jwtService.isTokenValid(token, userDetails)) {
+				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+				
+				SecurityContextHolder.getContext().setAuthentication(authToken);
+			}
 		}
 		
 		filterChain.doFilter(request, response);
