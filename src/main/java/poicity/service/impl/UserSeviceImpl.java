@@ -35,7 +35,7 @@ public class UserSeviceImpl implements UserService {
 	@Override
 	public void saveUser(User user) {
 	
-		Role role = roleRepository.findByName("ADMIN");
+		Role role = roleRepository.findByName("USER");
 		if (role == null) {
 			role = checkRoleExist();
 		}
@@ -49,7 +49,7 @@ public class UserSeviceImpl implements UserService {
 	
     private Role checkRoleExist(){
         Role role = new Role();
-        role.setName("ADMIN");
+        role.setName("USER");
         return roleRepository.save(role);
     }
 
