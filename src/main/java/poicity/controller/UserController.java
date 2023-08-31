@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import poicity.dto.UserDTO;
 import poicity.entity.User;
+import poicity.repository.RoleRepository;
 import poicity.repository.UserRepository;
 import poicity.service.UserService;
 
@@ -30,7 +31,8 @@ public class UserController {
 
 	private UserRepository userRepo;
 	private UserService userService;
-
+	private RoleRepository roleRepository;
+	
 	@PostMapping("create")
 	public ResponseEntity<UserDTO> add(@RequestBody UserDTO userDTO) {
 		userRepo.save(mapper.map(userDTO, User.class));
@@ -56,6 +58,7 @@ public class UserController {
 	@GetMapping("getAll")
 	public ResponseEntity<List<User>> getAll() {
 		List<User> listaUser = userRepo.findAll();
+		System.out.println(roleRepository.findAll());
 		
 		return new ResponseEntity<>(listaUser, HttpStatus.OK);
 	}

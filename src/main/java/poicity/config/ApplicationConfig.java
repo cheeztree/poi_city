@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 import poicity.repository.UserRepository;
+import poicity.service.CustomUserDetailsService;
 
 @Configuration
 @RequiredArgsConstructor
@@ -24,7 +25,9 @@ public class ApplicationConfig {
 
 	@Autowired
 	UserRepository userRepo;
-
+	@Autowired
+	CustomUserDetailsService customUserDetailsService;
+	
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
@@ -50,8 +53,8 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepo.findByUsername(username)
-        .orElseThrow(()-> new UsernameNotFoundException("User not fournd"));
+        return email -> customUserDetailsService.loadUserByEmail(email);
+//        return username -> customUserDetailsService.loadUserByUsername(username);
     }
 
 }

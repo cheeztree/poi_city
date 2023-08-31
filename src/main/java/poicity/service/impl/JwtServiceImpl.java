@@ -14,6 +14,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import poicity.entity.User;
 import poicity.service.JwtService;
 
 @Service
@@ -24,14 +25,30 @@ public class JwtServiceImpl implements JwtService{
 	@Override
 	public String getToken(UserDetails user) {
 		return getToken(new HashMap<>(), user);
-	}
+	}	
 	
-
+	@Override
+	public String getToken(User user) {
+		return getToken(new HashMap<>(), user);
+	}	
+	
 	private String getToken(Map<String, Object> extraClaims, UserDetails user) {
 		return Jwts
 				.builder()
 				.setClaims(extraClaims)
 				.setSubject(user.getUsername())
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + daysInMillis(30)))
+				.signWith(getKey(), SignatureAlgorithm.HS256)
+				.compact();
+	}
+	
+	private String getToken(Map<String, Object> extraClaims, User user) {
+		return Jwts
+				.builder()
+				.setClaims(extraClaims)
+//				.setSubject(user.getUsername())
+				.setSubject(user.getEmail())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + daysInMillis(30)))
 				.signWith(getKey(), SignatureAlgorithm.HS256)
@@ -90,4 +107,5 @@ public class JwtServiceImpl implements JwtService{
 		long l = 1000 * 60 * 60 * Long.valueOf(hours);
 		return l;
 	}
+
 }

@@ -2,9 +2,13 @@ package poicity.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
-public interface JwtService {
+import poicity.entity.User;
 
+public interface JwtService {
+	
 	String getToken(UserDetails user);
+	
+	String getToken(User user);
 
 	String getUsernameFromToken(String token);
 
