@@ -30,9 +30,11 @@ public class SecurityConfig {
 				.disable())
 				.authorizeHttpRequests (authRequest ->
 				authRequest
+				.requestMatchers("/swagger-ui/**").permitAll() // http://localhost:8080/swagger-ui/index.html/
 				.requestMatchers("/auth/**").permitAll()
 //				.requestMatchers("/users/**").permitAll()
 //                .requestMatchers("/users").hasRole("USER")
+//				.anyRequest().permitAll()
 				.anyRequest().authenticated()
 				)
 //				.formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH
