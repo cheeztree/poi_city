@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import poicity.entity.Language;
 
 @Setter
 @Getter
@@ -17,5 +18,6 @@ public class UserDTO {
     private String lastname;
     private String email;
     private String password; 
+    private int lang_id;
 	
 }

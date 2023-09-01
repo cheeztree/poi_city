@@ -25,13 +25,12 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 		return http
-				.csrf(
-					csrf ->	csrf
-				.disable())
-				.authorizeHttpRequests (authRequest ->
-				authRequest
+                .csrf().disable()
+				.authorizeHttpRequests (
+						authRequest -> authRequest
 				.requestMatchers("/swagger-ui/**").permitAll() // http://localhost:8080/swagger-ui/index.html/
 				.requestMatchers("/auth/**").permitAll()
+				.requestMatchers("/lang/getAll").permitAll()
 //				.requestMatchers("/users/**").permitAll()
 //                .requestMatchers("/users").hasRole("USER")
 //				.anyRequest().permitAll()
@@ -44,5 +43,26 @@ public class SecurityConfig {
 				.build();
 		
 	}
+		
+//		return http
+//				.csrf(
+//					csrf ->	csrf
+//				.disable())
+//				.authorizeHttpRequests (authRequest ->
+//				authRequest
+//				.requestMatchers("/swagger-ui/**").permitAll() // http://localhost:8080/swagger-ui/index.html/
+//				.requestMatchers("/auth/**").permitAll()
+////				.requestMatchers("/users/**").permitAll()
+////                .requestMatchers("/users").hasRole("USER")
+//				.anyRequest().permitAll()
+////				.anyRequest().authenticated()
+//				)
+////				.formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH
+//				.sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//				.authenticationProvider(authProvider)
+//				.addFilterBefore(jwtAthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//				.build();
+//		
+//	}
 	
 }
