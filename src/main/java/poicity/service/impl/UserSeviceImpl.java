@@ -35,6 +35,7 @@ public class UserSeviceImpl implements UserService {
 	@Override
 	public void saveUser(User user) {
 	
+		//ROLE
 		Role role = roleRepository.findByName("USER");
 		if (role == null) {
 			role = checkRoleExist();
@@ -43,6 +44,9 @@ public class UserSeviceImpl implements UserService {
         Set<Role> hash_Set = new HashSet<Role>();
         hash_Set.add(role);
 		user.setRoles(hash_Set);
+		
+		//LANG
+		
 		
 		userRepo.save(user);
 	}

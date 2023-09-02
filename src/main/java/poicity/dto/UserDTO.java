@@ -18,6 +18,7 @@ public class UserDTO {
     private String lastname;
     private String email;
     private String password; 
-    private int lang_id;
+//    private Language lang;
+    private long lang_id;
 	
 }

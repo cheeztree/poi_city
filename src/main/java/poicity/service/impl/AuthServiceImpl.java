@@ -6,9 +6,8 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import poicity.dto.AuthResponse;
 import poicity.dto.LoginDTO;
-import poicity.dto.RegisterDTO;
 import poicity.dto.UserDTO;
-
+import poicity.entity.Language;
 //import org.springframework.security.core.userdetails.User;
 import poicity.entity.User;
 
@@ -17,7 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import poicity.repository.UserRepository;
+import poicity.repository.LanguageRepository;
 import poicity.service.AuthService;
 import poicity.service.CustomUserDetailsService;
 import poicity.service.JwtService;
@@ -34,7 +33,8 @@ public class AuthServiceImpl implements AuthService{
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService customUserDetailsService;
-
+    private final LanguageRepository langRepo;
+    
 
 	@Override
 	public AuthResponse login(LoginDTO request) {
@@ -50,8 +50,9 @@ public class AuthServiceImpl implements AuthService{
 	public AuthResponse register(UserDTO request) {
 		User user = mapper.map(request, User.class);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		Language lang = langRepo.findById(request.getLang_id()).get();
+		user.setLang(lang);
 		
-//		userRepo.save(user);
 		userService.saveUser(user);
 
 		return AuthResponse.builder().token(jwtService.getToken(user)).build();
