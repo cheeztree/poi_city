@@ -11,30 +11,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import poicity.dto.LanguageDTO;
 import poicity.entity.Language;
 import poicity.repository.LanguageRepository;
+import poicity.service.LanguageService;
 
 @RestController
 @RequestMapping("/lang")
 @RequiredArgsConstructor
 public class LanguageController {
 
+//	@Autowired
+//	LanguageRepository langRepo; 
+    
 	@Autowired
-	LanguageRepository langRepo; 
+	private LanguageService langService;
 	
     @CrossOrigin
 	@GetMapping("getAll")
 	public ResponseEntity<List<Language>> getAll() {
-		List<Language> listaLangs = langRepo.findAll();
+		List<Language> listaLangs = langService.findAll();
 		
 		return new ResponseEntity<>(listaLangs, HttpStatus.OK);
 	}
 	
-	@GetMapping("getAll2")
-	public ResponseEntity<List<Language>> getAll2() {
-		List<Language> listaLangs = langRepo.findAll();
-		
-		return new ResponseEntity<>(listaLangs, HttpStatus.OK);
+	@GetMapping("getOnlyActive")
+	public ResponseEntity<List<LanguageDTO>> getAll2() {		
+		return new ResponseEntity<>(langService.getOnlyActive(), HttpStatus.OK);
 	}
 		
 }
