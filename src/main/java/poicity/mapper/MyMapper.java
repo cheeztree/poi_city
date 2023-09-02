@@ -1,4 +1,4 @@
-package poicity.model;
+package poicity.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 import poicity.dto.UserDTO;
 import poicity.entity.User;
 
-@Service
+//@Service
 public class MyMapper extends ModelMapper{
     
-	@Bean
-    public ModelMapper mapper() {
-        return new ModelMapper();
-    }
+//	@Bean
+//    public ModelMapper mapper() {
+//        return new ModelMapper();
+//    }
 	
 	
 	public UserDTO userToUserDTO(User user) {

@@ -1,5 +1,6 @@
 package poicity.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //import poicity.entity.User;
 
 import lombok.RequiredArgsConstructor;
+import poicity.mapper.MyMapper;
 import poicity.repository.UserRepository;
 import poicity.service.CustomUserDetailsService;
 
@@ -32,6 +34,16 @@ public class ApplicationConfig {
 		return config.getAuthenticationManager();
 	}
 
+	@Bean
+	public MyMapper model() {
+		return new MyMapper();
+	}
+	
+	@Bean
+    public ModelMapper mapper() {
+        return new ModelMapper();
+    }
+	
 	@Bean
 	public AuthenticationProvider authenticationProvicer() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

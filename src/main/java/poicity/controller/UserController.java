@@ -1,11 +1,7 @@
 package poicity.controller;
 
-import java.security.Principal;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,9 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import poicity.dto.UserDTO;
-import poicity.entity.Language;
 import poicity.entity.User;
-import poicity.model.MyMapper;
+import poicity.mapper.MyMapper;
 import poicity.repository.RoleRepository;
 import poicity.repository.UserRepository;
 import poicity.service.UserService;
