@@ -11,21 +11,21 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 //import org.springframework.security.core.userdetails.User;
 //import poicity.entity.User;
 
 import lombok.RequiredArgsConstructor;
 import poicity.mapper.MyMapper;
-import poicity.repository.UserRepository;
 import poicity.service.CustomUserDetailsService;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-	@Autowired
-	UserRepository userRepo;
 	@Autowired
 	CustomUserDetailsService customUserDetailsService;
 	
@@ -51,6 +51,13 @@ public class ApplicationConfig {
 		authenticationProvider.setPasswordEncoder(passwordEndecoder());
 		return authenticationProvider;
 	}
+	
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
+    }
 
     public static String bCrypt(String data) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
