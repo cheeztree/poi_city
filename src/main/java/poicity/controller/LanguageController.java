@@ -1,5 +1,6 @@
 package poicity.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import poicity.dto.ErrorDTO;
 import poicity.dto.LanguageDTO;
 import poicity.dto.LanguageTextDTO;
 import poicity.entity.Language;
@@ -46,8 +48,12 @@ public class LanguageController {
 	}
 	
 	@GetMapping("getLang/{id}")
-	public ResponseEntity<List<LanguageTextDTO>> setLang(@PathVariable("id") Long id) {
-		return new ResponseEntity<>(langTextService.findByLangId(id), HttpStatus.OK);
+	public ResponseEntity<Object> setLang(@PathVariable("id") Long id) {
+		if(langService.existsById(id)) {
+			return new ResponseEntity<>(langTextService.findByLangId(id), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Object>(new ErrorDTO(new Date(), "Language with id " + id + " doesn't exists."), HttpStatus.NOT_FOUND);
+		}
 	}
 
 }

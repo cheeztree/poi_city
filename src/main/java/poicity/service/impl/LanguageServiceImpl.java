@@ -1,19 +1,12 @@
 package poicity.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import poicity.dto.LanguageDTO;
-import poicity.dto.LanguageTextDTO;
 import poicity.entity.Language;
-import poicity.entity.LanguageText;
 import poicity.repository.LanguageRepository;
 import poicity.repository.LanguageTextRepository;
 import poicity.service.LanguageService;
@@ -21,8 +14,6 @@ import poicity.service.LanguageService;
 @Service
 public class LanguageServiceImpl implements LanguageService {
 
-	@Autowired
-	private ModelMapper mapper;
 	@Autowired
 	LanguageRepository langRepo;
 	@Autowired
@@ -48,6 +39,11 @@ public class LanguageServiceImpl implements LanguageService {
 		}
 
 		return listDTOs;
+	}
+	
+	@Override
+	public boolean existsById(Long id) {
+		return langRepo.existsById(id);
 	}
 
 

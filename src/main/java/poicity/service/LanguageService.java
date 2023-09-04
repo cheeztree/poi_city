@@ -8,4 +8,5 @@ import poicity.entity.Language;
 public interface LanguageService {
 	List<Language> findAll();
 	List<LanguageDTO> getOnlyActive();
+	boolean existsById(Long id);
 }
