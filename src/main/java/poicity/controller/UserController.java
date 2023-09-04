@@ -60,7 +60,7 @@ public class UserController {
 	public ResponseEntity<UserDTO> get(Authentication authentication) {
 		UserDTO userDTO = mapper.userToUserDTO(userRepo.findByEmail(authentication.getName()));
 
-		return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(userDTO, HttpStatus.OK);
 	}
 
 	@GetMapping("getAll")

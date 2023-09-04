@@ -30,11 +30,11 @@ public class SecurityConfig {
 						authRequest -> authRequest
 				.requestMatchers("/swagger-ui/**").permitAll() // http://localhost:8080/swagger-ui/index.html
 				.requestMatchers("/auth/**").permitAll()
-				.requestMatchers("/lang/getAll").permitAll()
+				.requestMatchers("/lang/getOnlyActive").permitAll()
 //				.requestMatchers("/users/**").permitAll()
 //                .requestMatchers("/users").hasRole("USER")
-				.anyRequest().permitAll()
-//				.anyRequest().authenticated()
+//				.anyRequest().permitAll()
+				.anyRequest().authenticated()
 				)
 //				.formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH
 				.sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

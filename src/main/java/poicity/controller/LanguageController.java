@@ -23,21 +23,22 @@ public class LanguageController {
 
 //	@Autowired
 //	LanguageRepository langRepo; 
-    
+
 	@Autowired
 	private LanguageService langService;
-	
-    @CrossOrigin
+
+//    @CrossOrigin
 	@GetMapping("getAll")
 	public ResponseEntity<List<Language>> getAll() {
 		List<Language> listaLangs = langService.findAll();
-		
+
 		return new ResponseEntity<>(listaLangs, HttpStatus.OK);
 	}
-	
+
+//	@CrossOrigin
 	@GetMapping("getOnlyActive")
-	public ResponseEntity<List<LanguageDTO>> getAll2() {		
+	public ResponseEntity<List<LanguageDTO>> getAll2() {
 		return new ResponseEntity<>(langService.getOnlyActive(), HttpStatus.OK);
 	}
-		
+
 }
