@@ -48,7 +48,7 @@ public class LanguageController {
 	}
 	
 	@GetMapping("getLang/{id}")
-	public ResponseEntity<Object> setLang(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> getLang(@PathVariable("id") Long id) {
 		if(langService.existsById(id)) {
 			return new ResponseEntity<>(langTextService.findByLangId(id), HttpStatus.OK);
 		} else {

@@ -43,11 +43,18 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
-    private Set<Role> tags;
+    private Set<UserTags> tags;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="id_lang", referencedColumnName = "id")
     private Language lang;
+    
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "users_pois",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "poi_id", referencedColumnName = "id")
+    )
+    private Set<PointOfInterest> pois;
 
     
 }

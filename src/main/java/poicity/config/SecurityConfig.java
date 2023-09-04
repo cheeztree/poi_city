@@ -34,8 +34,8 @@ public class SecurityConfig {
 				.requestMatchers("/lang/getLang/**").permitAll()
 //				.requestMatchers("/users/**").permitAll()
 //                .requestMatchers("/users").hasRole("USER")
-//				.anyRequest().permitAll()
-				.anyRequest().authenticated()
+				.anyRequest().permitAll()
+//				.anyRequest().authenticated()
 				)
 //				.formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH
 				.sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

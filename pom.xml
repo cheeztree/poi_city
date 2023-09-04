@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>poicity</groupId>
 	<artifactId>poi_city_be</artifactId>
-	<!--	<version>1-SNAPSHOT</version>-->
+	<version>1</version>
 	<name>poicity</name>
 	<!--	<description>Demo project for Spring Boot Todo Management
 	Project</description>-->

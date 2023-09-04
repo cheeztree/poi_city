@@ -27,5 +27,6 @@ public class City {
 	private double latitude;
 	private double longitude;
 	private String description;
+
 	
 }
