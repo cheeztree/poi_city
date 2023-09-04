@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import poicity.dto.LanguageDTO;
+import poicity.dto.LanguageTextDTO;
 import poicity.entity.Language;
+import poicity.entity.LanguageText;
 import poicity.repository.LanguageRepository;
+import poicity.repository.LanguageTextRepository;
 import poicity.service.LanguageService;
 
 @Service
@@ -22,6 +25,8 @@ public class LanguageServiceImpl implements LanguageService {
 	private ModelMapper mapper;
 	@Autowired
 	LanguageRepository langRepo;
+	@Autowired
+	LanguageTextRepository langTextRepo;
 
 	@Override
 	public List<Language> findAll() {
@@ -39,10 +44,11 @@ public class LanguageServiceImpl implements LanguageService {
 
 		List<LanguageDTO> listDTOs = new ArrayList<>();
 		for (Language lang : listActives) {
-			listDTOs.add(new LanguageDTO(lang.getLanguage()));
+			listDTOs.add(new LanguageDTO(lang.getId(), lang.getLanguage()));
 		}
 
 		return listDTOs;
 	}
+
 
 }

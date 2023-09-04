@@ -12,5 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LanguageDTO {
+	private Long id;
 	private String language;
 }

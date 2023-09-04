@@ -31,6 +31,7 @@ public class SecurityConfig {
 				.requestMatchers("/swagger-ui/**").permitAll() // http://localhost:8080/swagger-ui/index.html
 				.requestMatchers("/auth/**").permitAll()
 				.requestMatchers("/lang/getOnlyActive").permitAll()
+				.requestMatchers("/lang/getLang/**").permitAll()
 //				.requestMatchers("/users/**").permitAll()
 //                .requestMatchers("/users").hasRole("USER")
 //				.anyRequest().permitAll()

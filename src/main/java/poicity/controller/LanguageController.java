@@ -5,16 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import poicity.dto.LanguageDTO;
+import poicity.dto.LanguageTextDTO;
 import poicity.entity.Language;
-import poicity.repository.LanguageRepository;
 import poicity.service.LanguageService;
+import poicity.service.LanguageTextService;
 
 @RestController
 @RequestMapping("/lang")
@@ -26,6 +27,9 @@ public class LanguageController {
 
 	@Autowired
 	private LanguageService langService;
+	
+	@Autowired
+	private LanguageTextService langTextService;
 
 //    @CrossOrigin
 	@GetMapping("getAll")
@@ -39,6 +43,11 @@ public class LanguageController {
 	@GetMapping("getOnlyActive")
 	public ResponseEntity<List<LanguageDTO>> getAll2() {
 		return new ResponseEntity<>(langService.getOnlyActive(), HttpStatus.OK);
+	}
+	
+	@GetMapping("getLang/{id}")
+	public ResponseEntity<List<LanguageTextDTO>> setLang(@PathVariable("id") Long id) {
+		return new ResponseEntity<>(langTextService.findByLangId(id), HttpStatus.OK);
 	}
 
 }

@@ -46,7 +46,7 @@ public class User {
     private Set<Role> tags;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name="lang_id", referencedColumnName = "id")
+    @JoinColumn(name="id_lang", referencedColumnName = "id")
     private Language lang;
 
     
