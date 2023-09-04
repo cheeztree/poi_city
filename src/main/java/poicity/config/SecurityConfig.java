@@ -9,8 +9,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -20,50 +18,30 @@ public class SecurityConfig {
 
 	private final JwtAuthenticationFilter jwtAthenticationFilter;
 	private final AuthenticationProvider authProvider;
-	
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-		return http
-                .csrf().disable()
-				.authorizeHttpRequests (
-						authRequest -> authRequest
-				.requestMatchers("/swagger-ui/**").permitAll() // http://localhost:8080/swagger-ui/index.html
-				.requestMatchers("/auth/**").permitAll()
-				.requestMatchers("/lang/getOnlyActive").permitAll()
-				.requestMatchers("/lang/getLang/**").permitAll()
-//				.requestMatchers("/users/**").permitAll()
-//                .requestMatchers("/users").hasRole("USER")
-				.anyRequest().permitAll()
-//				.anyRequest().authenticated()
-				)
-//				.formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH
-				.sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authenticationProvider(authProvider)
-				.addFilterBefore(jwtAthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-				.build();
+		http.csrf().disable().authorizeHttpRequests(authRequest -> {
+			authRequest.requestMatchers("/swagger-ui/**").permitAll() // http://localhost:8080/swagger-ui/index.html
+			.requestMatchers("/auth/**").permitAll().requestMatchers("/lang/getOnlyActive").permitAll()
+			.requestMatchers("/lang/getLang/**").permitAll()
+			//				.requestMatchers("/users/**").permitAll()
+			//                .requestMatchers("/users").hasRole("USER")
+			//				.anyRequest().permitAll()
+			.anyRequest().authenticated();
+			//						.and().oauth2Login();
+
+		})
+		//				.formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH
+		.sessionManagement(
+				sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		.authenticationProvider(authProvider)
+		.addFilterBefore(jwtAthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//		http.csrf().disable().authorizeHttpRequests().anyRequest().authenticated().and().oauth2Login();
+
+		return http.build();
 		
 	}
-		
-//		return http
-//				.csrf(
-//					csrf ->	csrf
-//				.disable())
-//				.authorizeHttpRequests (authRequest ->
-//				authRequest
-//				.requestMatchers("/swagger-ui/**").permitAll() // http://localhost:8080/swagger-ui/index.html/
-//				.requestMatchers("/auth/**").permitAll()
-////				.requestMatchers("/users/**").permitAll()
-////                .requestMatchers("/users").hasRole("USER")
-//				.anyRequest().permitAll()
-////				.anyRequest().authenticated()
-//				)
-////				.formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH
-//				.sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//				.authenticationProvider(authProvider)
-//				.addFilterBefore(jwtAthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//				.build();
-//		
-//	}
-	
+
 }

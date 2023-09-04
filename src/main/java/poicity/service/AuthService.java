@@ -8,8 +8,6 @@ import poicity.dto.UserDTO;
 public interface AuthService {
 
 	AuthResponse login(LoginDTO request);
-	
 	AuthResponse register(UserDTO request);
 
-	
 }

@@ -48,7 +48,6 @@ public class AuthServiceImpl implements AuthService{
 
 	@Override
 	public AuthResponse register(UserDTO request) {
-		System.out.println(request);
 		User user = mapper.map(request, User.class);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		Language lang = langRepo.findById(request.getLang_id()).get();
