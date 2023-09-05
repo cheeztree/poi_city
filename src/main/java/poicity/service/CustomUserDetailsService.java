@@ -31,6 +31,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     user.getRoles().stream()
                             .map((role) -> new SimpleGrantedAuthority(role.getName()))
                             .collect(Collectors.toList()));
+//            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), null);
+
         }else {
             throw new UsernameNotFoundException("Invalid email or password");
         }
@@ -45,6 +47,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     user.getRoles().stream()
                             .map((role) -> new SimpleGrantedAuthority(role.getName()))
                             .collect(Collectors.toList()));
+
         }else {
             throw new UsernameNotFoundException("Invalid email or password");
         }

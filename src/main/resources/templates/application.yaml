@@ -1,0 +1,11 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+         google:
+          clientId: 192085761438-mci7v74i8bq76n8buq9j2qerdi27v5sj.apps.googleusercontent.com
+          clientSecret: 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
+          scope:
+           - email
+           - profile

@@ -10,5 +10,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //	Optional<org.springframework.security.core.userdetails.User> findByUsername2(String Username);
 	boolean existsByEmail(String email);
     User findByEmail(String email);
+    boolean existsByPassword(String password);
 
 }
