@@ -57,4 +57,9 @@ public class UserSeviceImpl implements UserService {
         return roleRepository.save(role);
     }
 
+	@Override
+	public User findByEmail(String email) {
+		return userRepo.findByEmail(email);
+	}
+
 }

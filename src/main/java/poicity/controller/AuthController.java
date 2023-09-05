@@ -49,7 +49,7 @@ public class AuthController {
 	public ResponseEntity<Object> register(@RequestBody UserDTO request) {
 		System.out.println(request);
 		if(userRepo.existsByEmail(request.getEmail())){
-			return new ResponseEntity<Object>(new ErrorDTO(new Date(), "User with '" + request.getEmail() +  "' already exists."), HttpStatus.CONFLICT);
+			return new ResponseEntity<Object>(new ErrorDTO(new Date(), "User with email '" + request.getEmail() +  "' already exists."), HttpStatus.CONFLICT);
 		} else {
 			System.out.println("ASDASDASDASDASD");
 			return ResponseEntity.ok(authService.register(request));

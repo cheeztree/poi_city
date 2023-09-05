@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +63,12 @@ public class JwtServiceImpl implements JwtService{
 		byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
+	
+//	private Key getKey() {
+//		byte[] keyBytes = Base64.decodeBase64(SECRET_KEY);
+//		SecretKey key = new SecretKeySpec(keyBytes, 0, keyBytes.length, "HmacSHA512");
+//		return key;
+//	}
 
 
 	@Override
