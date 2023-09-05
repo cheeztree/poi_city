@@ -17,6 +17,7 @@ import poicity.dto.AuthResponse;
 import poicity.dto.ErrorDTO;
 import poicity.dto.LoginDTO;
 import poicity.dto.UserDTO;
+import poicity.entity.User;
 import poicity.repository.UserRepository;
 import poicity.service.AuthService;
 
@@ -29,27 +30,19 @@ public class AuthController {
 	private UserRepository userRepo;
 	private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
-	
-	
+		
 	@PostMapping("login")
 	public ResponseEntity<Object> login(@RequestBody LoginDTO request) {
-		System.out.println(request);
-		if(userRepo.existsByEmail(request.getEmail())){			
-	        String encodedPassword = request.getPassword();
-	        if(passwordEncoder.matches(String.valueOf(request.getPassword()), encodedPassword)) {
-				System.out.println("2");
-
+		if(userRepo.existsByEmail(request.getEmail())){	
+			User user = userRepo.findByEmail(request.getEmail());
+	        if(passwordEncoder.matches(String.valueOf(request.getPassword()), user.getPassword())) {
 				return ResponseEntity.ok(authService.login(request));
-	        } else {
-				System.out.println("3");
-				
+	        } else {				
 				return new ResponseEntity<Object>(new ErrorDTO(new Date(), "Invalid password."), HttpStatus.NOT_FOUND);
 			}
 		} else {
-			System.out.println("1");
 			return new ResponseEntity<Object>(new ErrorDTO(new Date(), request.getEmail() +  "' doesn''t exists."), HttpStatus.NOT_FOUND);
 		}
-
 	}
 	
 	@PostMapping("register")
