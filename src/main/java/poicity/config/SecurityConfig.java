@@ -28,9 +28,8 @@ public class SecurityConfig {
 			.requestMatchers("/usertags/**").permitAll()
 			// .requestMatchers("/users/**").permitAll()
 			// .requestMatchers("/users").hasRole("USER")
-			.anyRequest().permitAll()
-			//			.anyRequest().authenticated()
-			// .and().oauth2Login();
+//									.anyRequest().permitAll()
+			.anyRequest().authenticated()	
 			;
 
 		})

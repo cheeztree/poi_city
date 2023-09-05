@@ -14,4 +14,6 @@ public interface JwtService {
 
 	boolean isTokenValid(String token, UserDetails userDetails);
 
+	public User decodeGoogleToken(String token);
+		
 }
