@@ -73,7 +73,7 @@ public class AuthController {
 
 			userRepo.save(user);
 			
-			JavaMail.mandaEmailXresetPass(user.getEmail(), newPassword, user.getName());
+			JavaMail.mandaEmailXresetPass2(user.getEmail(), newPassword, user.getName());
 			
 		} else {
 			return new ResponseEntity<Object>(new ErrorDTO("User with this email doesn't exists."), HttpStatus.NOT_FOUND);

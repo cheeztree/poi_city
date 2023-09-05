@@ -1,5 +1,8 @@
 package poicity.utils;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
@@ -61,6 +64,55 @@ public class JavaMail {
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static void mandaEmailXresetPass2(String emailTo, String newPass, String nomeUtente) {
+
+		String body = "Hi " + nomeUtente + ",\r\n"
+				+ "\r\n"
+				+ "You recently requested to reset the password for your PoiCity account. We have reset your password, you can find it below:\r\n"
+				+ "\r\n"
+				+ newPass + "\r\n"
+				+ "\r\n"
+				+ "Please change this password as soon as possible."
+				+ "\r\n"
+				+ "If you did not request a password reset, please ignore this email or reply to let us know.\r\n"
+				+ "\r\n"
+				+ "Thanks,"
+				+ "\n"
+				+ "The PoiCity team";
+		
+		try {
+			Message message = new MimeMessage(inizializzaSession());
+			message.setFrom(new InternetAddress(fromEmail, "PoiCity Services"));
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
+			message.setSubject("Password reset");
+			message.setText(body);
+			message.setContent(getStringFromHtml(newPass, nomeUtente), "text/html; charset=utf-8");
+			Transport.send(message);
+			System.out.println("Email Message Sent Successfully");
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private static String getStringFromHtml(String newPass, String nomeUtente) {
+		StringBuilder contentBuilder = new StringBuilder();
+		try {
+		    BufferedReader in = new BufferedReader(new FileReader("C:\\Users\\Telsone\\Desktop\\mail\\mail.html"));
+		    String str;
+		    while ((str = in.readLine()) != null) {
+		        contentBuilder.append(str);
+		    }
+		    in.close();
+		} catch (IOException e) {
+		}
+		String content = contentBuilder.toString();
+		content = content.replace("[nomeUtente]", nomeUtente);
+		content = content.replace("[newPass]", newPass);
+		
+		
+		return content;
 	}
 
 }
