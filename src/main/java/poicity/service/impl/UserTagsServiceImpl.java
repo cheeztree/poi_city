@@ -54,7 +54,7 @@ public class UserTagsServiceImpl implements UserTagsService{
 			}
 		}
 		
-//		System.out.println(map);
+		System.out.println(map);
 
 //		user.setTags(mapper.listUserTagsDTOToUserTags(listDTO));
 //		user.setTags(mapper.listUserTagsDTOToUserTags2(listDTO));
