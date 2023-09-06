@@ -34,27 +34,25 @@ public class UserTagsController {
 //			, produces="application/json"
 			)
 	
-	public ResponseEntity<Object> saveTagsForUser(@RequestBody List<UserTagsDTO> userTags,
-			Authentication authentication) {
+	public ResponseEntity<Object> saveTagsForUser(@RequestBody List<UserTagsDTO> userTags, Authentication authentication) {
 
-		System.out.println(userTags);
 		service.saveListUserTagsForUser(userTags, authentication.getName());
-//		service.saveListUserTagsForUser(userTags, "christian.llover1a@tel1sone.i1t");
+		
 		return new ResponseEntity<>(HttpStatus.OK);
-
-//		try {
-//			service.saveListUserTagsForUser(userTags, authentication.getName());
-//			return new ResponseEntity<>(null, HttpStatus.OK);
-//		} catch(Exception e) {
-//			System.out.println("asdasdasdasd");
-//			e.printStackTrace();
-//			return new ResponseEntity<>(new ErrorDTO(e.getMessage()), HttpStatus.OK);
-//		}
 
 	}
 
 	@GetMapping("/get")
 	public ResponseEntity<Object> getByUser(Authentication authentication) {
+		if (authentication != null) {
+			return new ResponseEntity<>(service.findByEmail(authentication.getName()), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(new ErrorDTO("Authentication not valid"), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@GetMapping("/getByLang")
+	public ResponseEntity<Object> getByLang(Authentication authentication) {
 		if (authentication != null) {
 			return new ResponseEntity<>(service.findByEmail(authentication.getName()), HttpStatus.OK);
 		} else {

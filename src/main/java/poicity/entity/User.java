@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.HashMap;
 import java.util.Set;
 
 @Setter
@@ -26,7 +25,7 @@ public class User {
 	private String username;
     private String name;
     private String lastname;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
     private String password;

@@ -29,9 +29,11 @@ public class LanguageText {
 	private long id;
     @Column(nullable = false)
 	private String id_element;
+    
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="id_lang", referencedColumnName = "id")
     private Language lang;
+    
 	@Column(columnDefinition = "TEXT")
 	private String text;
 	
