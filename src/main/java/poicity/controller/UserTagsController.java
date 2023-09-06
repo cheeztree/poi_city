@@ -23,21 +23,20 @@ public class UserTagsController {
 
 	private UserTagsService service;
 
-	@CrossOrigin
 	@GetMapping("/getAll")
 	public ResponseEntity<List<UserTagsDTO>> getAll() {
 		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
 	}
 
-//	@CrossOrigin(origins = "http://localhost:4200")
-	@PostMapping(value = "/saveTags"
-//			, produces="application/json"
-			)
-	
+	@PostMapping("/saveTags" )
 	public ResponseEntity<Object> saveTagsForUser(@RequestBody List<UserTagsDTO> userTags, Authentication authentication) {
+		if (authentication != null) {
+			service.saveListUserTagsForUser(userTags, authentication.getName());
+		} else {
+			return new ResponseEntity<>(new ErrorDTO("Authentication not valid"), HttpStatus.UNAUTHORIZED);
+		}
 
-		service.saveListUserTagsForUser(userTags, authentication.getName());
-		
+
 		return new ResponseEntity<>(HttpStatus.OK);
 
 	}
@@ -50,7 +49,7 @@ public class UserTagsController {
 			return new ResponseEntity<>(new ErrorDTO("Authentication not valid"), HttpStatus.UNAUTHORIZED);
 		}
 	}
-	
+
 	@GetMapping("/getByLang")
 	public ResponseEntity<Object> getByLang(Authentication authentication) {
 		if (authentication != null) {
