@@ -27,12 +27,16 @@ public class LanguageText {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
 	private String id_element;
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name="lang_id", referencedColumnName = "id")
+    @JoinColumn(name="id_lang", referencedColumnName = "id")
     private Language lang;
 	@Column(columnDefinition = "TEXT")
 	private String text;
+	
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="id_userTag", referencedColumnName = "id")
+    private UserTags userTags;
 	
 }

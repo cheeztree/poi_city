@@ -40,8 +40,8 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_tags",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+        joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_tag", referencedColumnName = "id")
     )
     private Set<UserTags> tags;
 
@@ -51,8 +51,8 @@ public class User {
     
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_pois",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "poi_id", referencedColumnName = "id")
+        joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_poi", referencedColumnName = "id")
     )
     private Set<PointOfInterest> pois;
 
