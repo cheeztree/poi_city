@@ -22,6 +22,7 @@ import poicity.repository.LanguageRepository;
 import poicity.repository.UserRepository;
 import poicity.service.AuthService;
 import poicity.service.JwtService;
+import poicity.utils.FilesUtils;
 import poicity.utils.JavaMail;
 import poicity.utils.PasswordGenerator;
 
@@ -63,6 +64,9 @@ public class AuthController {
 					new ErrorDTO(new Date(), "User with email '" + request.getEmail() + "' already exists."),
 					HttpStatus.CONFLICT);
 		} else {
+			if(request.getAvatar().equals("") || request.getAvatar() == null || request.getAvatar().equals("string")) {
+				request.setAvatar(FilesUtils.immagazzinaAvatarDefault2());
+			}
 			return ResponseEntity.ok(authService.register(request));
 		}
 	}

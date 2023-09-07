@@ -62,4 +62,9 @@ public class UserSeviceImpl implements UserService {
 		return userRepo.findByEmail(email);
 	}
 
+	@Override
+	public void save(User user) {
+		userRepo.save(user);
+	}
+
 }

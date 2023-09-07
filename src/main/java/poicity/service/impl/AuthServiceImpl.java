@@ -54,7 +54,10 @@ public class AuthServiceImpl implements AuthService{
 		Language lang = langRepo.findById(request.getLang_id()).get();
 		user.setLang(lang);
 
-		userService.saveUser(user);
+		System.out.println(user);
+		
+//		userService.saveUser(user);
+		userService.save(user);
 
 		return AuthResponse.builder().token(jwtService.getToken(user)).build();
 	}
