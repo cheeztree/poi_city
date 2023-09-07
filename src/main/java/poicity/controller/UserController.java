@@ -40,7 +40,7 @@ public class UserController {
 	@PostMapping("create")
 	public ResponseEntity<UserDTO> add(@RequestBody UserDTO userDTO) {
 		if(userDTO.getAvatar().equals("") || userDTO.getAvatar() == null || userDTO.getAvatar().equals("string")) {
-			userDTO.setAvatar(FilesUtils.immagazzinaAvatarDefault());
+			userDTO.setAvatar(FilesUtils.immagazzinaAvatarDefault2());
 		}
 		
 		userRepo.save(mapper.map(userDTO, User.class));
