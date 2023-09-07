@@ -53,8 +53,6 @@ public class AuthServiceImpl implements AuthService{
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		Language lang = langRepo.findById(request.getLang_id()).get();
 		user.setLang(lang);
-
-		System.out.println(user);
 		
 //		userService.saveUser(user);
 		userService.save(user);

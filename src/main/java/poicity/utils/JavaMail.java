@@ -108,7 +108,11 @@ public class JavaMail {
 		} catch (IOException e) {
 		}
 		String content = contentBuilder.toString();
-		content = content.replace("[nomeUtente]", nomeUtente);
+		if(nomeUtente != null) {
+			content = content.replace("[nomeUtente]", nomeUtente);
+		} else {
+			content = content.replace("[nomeUtente]", "Customer");
+		}
 		content = content.replace("[newPass]", newPass);
 		
 		

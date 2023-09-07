@@ -91,7 +91,7 @@ public class FilesUtils {
 		String nuovoNome = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSS"));
         File fileTo = new File(pathXimg.toString() + "\\" + nuovoNome + ".png");
         
-        System.out.println(fileTo.getAbsolutePath());
+//        System.out.println(fileTo.getAbsolutePath());
         try {
 			Files.copy(in, Paths.get(fileTo.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
 			newPath = fileTo.getAbsolutePath();
