@@ -14,4 +14,9 @@ public class ErrorDTO {
 	private Date timestamp;
 	private String message;
 	
+	public ErrorDTO(String message) {
+		timestamp = new Date();
+		this.message = message;
+	}
+	
 }
