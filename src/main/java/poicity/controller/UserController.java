@@ -1,19 +1,10 @@
 package poicity.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +23,6 @@ import poicity.entity.User;
 import poicity.mapper.MyMapper;
 import poicity.repository.RoleRepository;
 import poicity.repository.UserRepository;
-import poicity.service.UserService;
 import poicity.utils.FilesUtils;
 
 @RestController
@@ -44,14 +34,19 @@ public class UserController {
 
 	private MyMapper mapper;
 	private UserRepository userRepo;
-	private UserService userService;
+//	private UserService userService;
 	private RoleRepository roleRepository;
 
 	@PostMapping("create")
 	public ResponseEntity<UserDTO> add(@RequestBody UserDTO userDTO) {
+		if(userDTO.getAvatar().equals("") || userDTO.getAvatar() == null || userDTO.getAvatar().equals("string")) {
+			userDTO.setAvatar(FilesUtils.immagazzinaAvatarDefault());
+		}
+		
 		userRepo.save(mapper.map(userDTO, User.class));
 
 		return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+		
 	}
 
 	@GetMapping("getById/{id}")
@@ -113,41 +108,9 @@ public class UserController {
 		}
 	}
 
-		@PostMapping(value = "/prova", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-//	@PostMapping("/prova")
-	public void provaUploadImg(@RequestParam("imageFile") MultipartFile multipartFile) throws IOException {
-		User user = new User();
-
-		user.setEmail("asd@asd.com");
-		user.setPassword("asd");
-
-		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		user.setLogo(fileName);
-
-		User newUser = userRepo.save(user);
-
-		String uploadDir = "C:\\logos\\1\\" + newUser.getId();
-		Path uploadPath = Paths.get(uploadDir);
-
-		if(Files.exists(uploadPath)) {
-			Files.createDirectories(uploadPath);
-		}
-
-		InputStream inputStream = multipartFile.getInputStream();
-		Path filePath = uploadPath.resolve(fileName);
-
-		System.out.println(inputStream);
-		System.out.println(filePath);
-
-		Files.copy(inputStream, Paths.get("C:\\logos\\1\\logo_chogan.webp"), StandardCopyOption.REPLACE_EXISTING);
-
-
-
-	}
-
 	
 	@PostMapping("/uploadImgUser")
-	public ResponseEntity<?> provaUploadImg2(@RequestParam("image")MultipartFile file, @RequestParam(value="email") String email) {
+	public ResponseEntity<?> provaUploadImg(@RequestParam("image")MultipartFile file, @RequestParam(value="email") String email) {
 		if(!userRepo.existsByEmail(email)) {
 			return new ResponseEntity<>(new ErrorDTO("User with email '" + email + "' already exists."), HttpStatus.UNAUTHORIZED);
 		}
@@ -155,11 +118,11 @@ public class UserController {
 		if(byteToMB(file.getSize())>5) {
 			return new ResponseEntity<>(new ErrorDTO("Files sizes limit is 5MB"), HttpStatus.UNAUTHORIZED);	
 		}
-
+		
 		String pathImg = FilesUtils.immagazzinaImg(file);
 		
 		User user = userRepo.findByEmail(email);
-		user.setLogo(pathImg);
+		user.setAvatar(pathImg);
 		
 		userRepo.save(user);
 		

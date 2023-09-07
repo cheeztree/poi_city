@@ -55,5 +55,5 @@ public class User {
     )
     private Set<PointOfInterest> pois;
 
-    private String logo;
+    private String avatar;
 }

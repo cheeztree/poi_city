@@ -22,5 +22,6 @@ public class UserDTO {
     private String password; 
 //    private Language lang;
     private long lang_id;
+    private String avatar;
 	
 }
