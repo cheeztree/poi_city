@@ -11,4 +11,5 @@ import poicity.entity.Language;
 public interface LanguageRepository extends JpaRepository<Language, Long> {
 	 List<Language> findByAttivoTrue();
 	 boolean existsById(Long id);
+
 }

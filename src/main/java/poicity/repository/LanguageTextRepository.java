@@ -9,5 +9,9 @@ import poicity.entity.LanguageText;
 
 @Repository
 public interface LanguageTextRepository extends JpaRepository<LanguageText, Long>{
+	
 	List<LanguageText> findByLangId(long id);
+	List<LanguageText> findAllByLangIdAndUserTagsIdIn(long id_lang, List<Long> id_userTags);
+	List<LanguageText> findAllByUserTagsId(long id);
+	
 }

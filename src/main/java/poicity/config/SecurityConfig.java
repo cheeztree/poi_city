@@ -2,6 +2,7 @@ package poicity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,24 +25,31 @@ public class SecurityConfig {
 
 		http.csrf().disable().authorizeHttpRequests(authRequest -> {
 			authRequest.requestMatchers("/swagger-ui/**").permitAll() // http://localhost:8080/swagger-ui/index.html
-			.requestMatchers("/auth/**").permitAll().requestMatchers("/lang/getOnlyActive").permitAll()
-			.requestMatchers("/lang/getLang/**").permitAll()
-			//				.requestMatchers("/users/**").permitAll()
-			//                .requestMatchers("/users").hasRole("USER")
-			//				.anyRequest().permitAll()
-			.anyRequest().authenticated();
-			//						.and().oauth2Login();
+			.requestMatchers("/auth/**").permitAll()
+			.requestMatchers("/lang/**").permitAll()
+			.requestMatchers("/usertags/**").permitAll()
+			// .requestMatchers("/users/**").permitAll()
+			// .requestMatchers("/users").hasRole("USER")
+			//					.requestMatchers(HttpMethod.POST, "/**").permitAll().requestMatchers(HttpMethod.GET, "/**")
+			//					.permitAll().requestMatchers(HttpMethod.PUT, "/**").permitAll()
+			//					.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+			 .anyRequest().permitAll()
+//			.anyRequest().authenticated()
+
+			;
 
 		})
-		//				.formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH
+		// .formLogin(withDefaults()) //CHIEDE IL LOGIN AD OGNI CAMBIO PAGINA O REFRESH
 		.sessionManagement(
 				sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authenticationProvider(authProvider)
 		.addFilterBefore(jwtAthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//		http.csrf().disable().authorizeHttpRequests().anyRequest().authenticated().and().oauth2Login();
+
+		// http.csrf().disable().authorizeHttpRequests().anyRequest().authenticated().and().oauth2Login();
 
 		return http.build();
-		
+
 	}
 
 }

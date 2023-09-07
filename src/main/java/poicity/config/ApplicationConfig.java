@@ -18,6 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.reactive.config.CorsRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //import org.springframework.security.core.userdetails.User;
 //import poicity.entity.User;
@@ -65,16 +68,69 @@ public class ApplicationConfig {
 	
 	@Bean
 	public CorsFilter corsFilter() {
+		
 	    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	    final CorsConfiguration config = new CorsConfiguration();
-//	    config.setAllowCredentials(true);
-	    config.setAllowedOrigins(Collections.singletonList("*"));
-	    config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
-	    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+	    
+//	    config.setAllowedOrigins(Collections.singletonList("*"));
+//	    config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+//	    config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
+	    config.setAllowedOriginPatterns(Arrays.asList("*"));
+	    config.setAllowedHeaders(Arrays.asList("*"));
+//	    config.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
+//	    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+	    config.setAllowedMethods(Arrays.asList("*"));
+	    config.setAllowCredentials(true);
+
 	    source.registerCorsConfiguration("/**", config);
+	    
 	    return new CorsFilter(source);
+	    
 	}
 
+	
+//	  @Bean
+//	  public CorsFilter corsFilter() {
+//
+//	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//	    CorsConfiguration config = new CorsConfiguration();
+//	    config.setAllowCredentials(true); //updated to false
+//	    config.addAllowedOrigin("*");
+//	    config.addAllowedHeader("*");
+//	    config.addAllowedMethod("GET");
+//	    config.addAllowedMethod("PUT");
+//	    config.addAllowedMethod("POST");
+//	    source.registerCorsConfiguration("/**", config);
+//	    
+//	    return new CorsFilter(source);
+//	  }
+
+//	  @Bean
+//	  public WebMvcConfigurer corsConfigurer() {
+//	    return new WebMvcConfigurerAdapter() {
+//	      @Override
+//	      public void addCorsMappings(CorsRegistry registry) {
+//	        registry.addMapping("/").allowedOrigins("http://localhost:3000");
+//	      }
+//	    };
+//	  }
+// 
+	  
+//	@Bean
+//	public WebFluxConfigurer corsMappingConfigurer() {
+//	    return new WebFluxConfigurer() {
+//	        @Override
+//	        public void addCorsMappings(CorsRegistry registry) {
+//	        	WebConfigProperties.Cors cors = WebConfigProperties.getCors();
+//	            registry.addMapping("/**")
+//	              .allowedOrigins(cors.getAllowedOrigins())
+//	              .allowedMethods(cors.getAllowedMethods())
+//	              .maxAge(cors.getMaxAge())
+//	              .allowedHeaders(cors.getAllowedHeaders())
+//	              .exposedHeaders(cors.getExposedHeaders());
+//	        }
+//	    };
+//	}
     public static String bCrypt(String data) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
         return passwordEncoder.encode(data);
