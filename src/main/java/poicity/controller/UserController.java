@@ -113,13 +113,20 @@ public class UserController {
 	@PostMapping("/uploadImgUser")
 	public ResponseEntity<?> uploadImgUser(@RequestParam("image") MultipartFile file,
 			@RequestParam(value = "email") String email) {
+
+		if(file.getSize() == 0) {
+			return new ResponseEntity<>(new ErrorDTO("File cannot be null."),
+					HttpStatus.BAD_REQUEST);
+		}
+		
 		if (!userRepo.existsByEmail(email)) {
 			return new ResponseEntity<>(new ErrorDTO("User with email '" + email + "' already exists."),
 					HttpStatus.UNAUTHORIZED);
 		}
 
 		if (byteToMB(file.getSize()) > 5) {
-			return new ResponseEntity<>(new ErrorDTO("Files sizes limit is 5MB"), HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(new ErrorDTO("Files sizes limit is 5MB"), 
+					HttpStatus.BAD_REQUEST);
 		}
 
 		String pathImg = FilesUtils.immagazzinaImg(file);
@@ -163,7 +170,6 @@ public class UserController {
 			ResponseEntity<?> res = new ResponseEntity<>(new ErrorDTO("User not found."), responseHeaders, HttpStatus.NOT_FOUND);
 			return res;
 			
-
 		}
 
 		try {
