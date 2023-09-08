@@ -1,5 +1,8 @@
 package poicity.service.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +11,7 @@ import poicity.dto.AuthResponse;
 import poicity.dto.LoginDTO;
 import poicity.dto.UserDTO;
 import poicity.entity.Language;
+import poicity.entity.Role;
 //import org.springframework.security.core.userdetails.User;
 import poicity.entity.User;
 
@@ -17,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import poicity.repository.LanguageRepository;
+import poicity.repository.RoleRepository;
 import poicity.service.AuthService;
 import poicity.service.CustomUserDetailsService;
 import poicity.service.JwtService;
@@ -35,7 +40,7 @@ public class AuthServiceImpl implements AuthService{
 	private final AuthenticationManager authenticationManager;
 	private final CustomUserDetailsService customUserDetailsService;
 	private final LanguageRepository langRepo;
-
+	private final RoleRepository roleRepo; 
 
 	@Override
 	public AuthResponse login(LoginDTO request) {
@@ -53,6 +58,11 @@ public class AuthServiceImpl implements AuthService{
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		Language lang = langRepo.findById(request.getLang_id()).get();
 		user.setLang(lang);
+		
+//		user.setRoles(new HashSet<Role>(roleRepo.findAll()));
+		Set<Role> asd = new HashSet<Role>();
+		asd.add(roleRepo.findByName("USER"));
+		user.setRoles(asd);
 		
 //		userService.saveUser(user);
 		userService.save(user);

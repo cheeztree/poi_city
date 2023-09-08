@@ -29,7 +29,7 @@ public class SecurityConfig {
 			.requestMatchers("/lang/**").permitAll()
 			.requestMatchers("/usertags/**").permitAll()
 			// .requestMatchers("/users/**").permitAll()
-			// .requestMatchers("/users").hasRole("USER")
+//			 .requestMatchers("/users/getAll").hasRole("USER")
 			//					.requestMatchers(HttpMethod.POST, "/**").permitAll().requestMatchers(HttpMethod.GET, "/**")
 			//					.permitAll().requestMatchers(HttpMethod.PUT, "/**").permitAll()
 			//					.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
