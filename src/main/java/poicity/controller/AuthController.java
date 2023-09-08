@@ -26,6 +26,7 @@ import poicity.repository.UserRepository;
 import poicity.service.AuthService;
 import poicity.service.JwtService;
 import poicity.service.LanguageService;
+import poicity.service.UserService;
 import poicity.utils.FilesUtils;
 import poicity.utils.JavaMail;
 import poicity.utils.PasswordGenerator;
@@ -37,6 +38,7 @@ public class AuthController {
 
 	@Autowired
 	private UserRepository userRepo;
+	private final UserService userService;
 	private final AuthService authService;
 	private final PasswordEncoder passwordEncoder;
 	@Autowired
@@ -50,8 +52,8 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@RequestBody LoginDTO request) {
-		if (userRepo.existsByEmail(request.getEmail())) {
-			User user = userRepo.findByEmail(request.getEmail());
+		if (userService.existsByEmail(request.getEmail())) {
+			User user = userService.findByEmail(request.getEmail());
 			if (passwordEncoder.matches(String.valueOf(request.getPassword()), user.getPassword())) {
 				return ResponseEntity.ok(authService.login(request));
 			} else {

@@ -3,10 +3,10 @@ package poicity.service;
 import poicity.dto.UserDTO;
 import poicity.entity.User;
 
-
 public interface UserService {
 	User updateUser(UserDTO userDTO);
 	void saveUser(User user);
 	User findByEmail(String email);
 	void save(User user);
+	boolean existsByEmail(String email);
 }
