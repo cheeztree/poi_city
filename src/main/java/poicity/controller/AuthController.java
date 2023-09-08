@@ -79,10 +79,14 @@ public class AuthController {
 					HttpStatus.BAD_REQUEST);
 		}
 
-		if (request.getAvatar().equals("") || request.getAvatar() == null || request.getAvatar().equals("string")) {
+		if(request.getAvatar() != null) {
+			if (request.getAvatar().equals("") || request.getAvatar().equals("string")) {
+				request.setAvatar(FilesUtils.immagazzinaAvatarDefault2());
+			}
+		} else {
 			request.setAvatar(FilesUtils.immagazzinaAvatarDefault2());
 		}
-		
+
 		try {
 			return ResponseEntity.ok(authService.register(request));
 		} catch(ConstraintViolationException e) {
