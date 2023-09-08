@@ -2,6 +2,8 @@ package poicity.controller;
 
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import poicity.dto.ErrorDTO;
 import poicity.dto.GoogleLoginDTO;
@@ -22,6 +25,7 @@ import poicity.repository.LanguageRepository;
 import poicity.repository.UserRepository;
 import poicity.service.AuthService;
 import poicity.service.JwtService;
+import poicity.service.LanguageService;
 import poicity.utils.FilesUtils;
 import poicity.utils.JavaMail;
 import poicity.utils.PasswordGenerator;
@@ -38,9 +42,12 @@ public class AuthController {
 	@Autowired
 	private JwtService jwtService;
 	@Autowired
-	LanguageRepository langRepo;
-	
-	
+	private LanguageRepository langRepo;
+	@Autowired
+	private LanguageService langService;
+
+	Logger log = LogManager.getLogger(AuthController.class);
+
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@RequestBody LoginDTO request) {
 		if (userRepo.existsByEmail(request.getEmail())) {
@@ -58,21 +65,33 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public ResponseEntity<Object> register(@RequestBody UserDTO request) {
-		System.out.println(request);
+//		System.out.println(request);
 		if (userRepo.existsByEmail(request.getEmail())) {
 			return new ResponseEntity<Object>(
-					new ErrorDTO(new Date(), "User with email '" + request.getEmail() + "' already exists."),
-					HttpStatus.CONFLICT);
-		} else {
-			if(request.getAvatar().equals("") || request.getAvatar() == null || request.getAvatar().equals("string")) {
-				request.setAvatar(FilesUtils.immagazzinaAvatarDefault2());
-			}
-			return ResponseEntity.ok(authService.register(request));
+					new ErrorDTO("User with email '" + request.getEmail() + "' already exists."), HttpStatus.CONFLICT);
 		}
+		
+		if (!langService.existsById(request.getLang_id())) {
+			return new ResponseEntity<Object>(
+					new ErrorDTO("Language with id '" + request.getLang_id() + "' doesn't exists."),
+					HttpStatus.BAD_REQUEST);
+		}
+
+		if (request.getAvatar().equals("") || request.getAvatar() == null || request.getAvatar().equals("string")) {
+			request.setAvatar(FilesUtils.immagazzinaAvatarDefault2());
+		}
+		
+		try {
+			return ResponseEntity.ok(authService.register(request));
+		} catch(ConstraintViolationException e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<Object>(new ErrorDTO("'" + request.getEmail() + "' is not a valid mail."), HttpStatus.NOT_ACCEPTABLE);
+		}
+		
 	}
 
 	@PostMapping("/resetPassword")
-	public ResponseEntity<Object> register(@RequestBody ResetPasswordDTO resetPassDTO) {
+	public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordDTO resetPassDTO) {
 
 		String email = resetPassDTO.getEmail();
 		if (userRepo.existsByEmail(email)) {
@@ -97,8 +116,8 @@ public class AuthController {
 	public ResponseEntity<Object> google(@RequestBody GoogleLoginDTO login) {
 		User user = jwtService.decodeGoogleToken(login.getGoogleToken());
 		user.setLang(langRepo.findById(login.getLang_id()).get());
-		
-		if(!user.getEmail().equals("")) {
+
+		if (!user.getEmail().equals("")) {
 
 			if (userRepo.existsByEmail(user.getEmail())) {
 				return new ResponseEntity<Object>(
@@ -111,7 +130,7 @@ public class AuthController {
 		} else {
 			return new ResponseEntity<Object>(new ErrorDTO("Invalid token"), HttpStatus.NOT_FOUND);
 		}
-		
+
 	}
 
 }

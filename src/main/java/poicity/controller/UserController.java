@@ -130,7 +130,6 @@ public class UserController {
 		}
 
 		String pathImg = FilesUtils.immagazzinaImg(file);
-//		asd
 
 		User user = userRepo.findByEmail(email);
 		user.setAvatar(pathImg);

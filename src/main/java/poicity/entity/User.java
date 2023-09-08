@@ -1,6 +1,7 @@
 package poicity.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class User {
     private String name;
     private String lastname;
     @Column(unique = true, nullable = false)
+    @Email
     private String email;
     @Column(nullable = false)
     private String password;
