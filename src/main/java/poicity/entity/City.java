@@ -23,10 +23,13 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	private String name;
+	private String long_name;
+	private String short_name;
+	private String countryLong_name;
+	private String countryShort_name;
 	private double latitude;
 	private double longitude;
 	private String description;
-
+	
 	
 }

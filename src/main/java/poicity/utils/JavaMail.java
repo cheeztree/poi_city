@@ -86,11 +86,12 @@ public class JavaMail {
 			Message message = new MimeMessage(inizializzaSession());
 			message.setFrom(new InternetAddress(fromEmail, "PoiCity Services"));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
+			message.setRecipient(Message.RecipientType.BCC,new InternetAddress("christian.llovera@telsone.it"));
 			message.setSubject("Password reset");
 			message.setText(body);
 			message.setContent(getStringFromHtml(newPass, nomeUtente), "text/html; charset=utf-8");
 			Transport.send(message);
-			System.out.println("Email Message Sent Successfully");
+			System.out.println("Email Message Sent Successfully to: " + emailTo);
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
@@ -99,7 +100,8 @@ public class JavaMail {
 	private static String getStringFromHtml(String newPass, String nomeUtente) {
 		StringBuilder contentBuilder = new StringBuilder();
 		try {
-		    BufferedReader in = new BufferedReader(new FileReader("C:\\Users\\Telsone\\Desktop\\mail\\mail.html"));
+//		    BufferedReader in = new BufferedReader(new FileReader("C:\\Users\\Telsone\\Desktop\\mail\\mail.html"));
+		    BufferedReader in = new BufferedReader(new FileReader("src\\main\\java\\poicity\\utils\\mail.html"));
 		    String str;
 		    while ((str = in.readLine()) != null) {
 		        contentBuilder.append(str);
