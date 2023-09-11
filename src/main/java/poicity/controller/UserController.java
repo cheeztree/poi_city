@@ -41,12 +41,13 @@ public class UserController {
 
 	@PostMapping("create")
 	public ResponseEntity<UserDTO> add(@RequestBody UserDTO userDTO) {
+
+		User user = userRepo.save(mapper.map(userDTO, User.class));
+		
 		if (userDTO.getAvatar().equals("") || userDTO.getAvatar() == null || userDTO.getAvatar().equals("string")) {
-			userDTO.setAvatar(FilesUtils.immagazzinaAvatarDefault2());
+			userDTO.setAvatar(FilesUtils.immagazzinaAvatarDefault2(user.getId()));
 		}
-
-		userRepo.save(mapper.map(userDTO, User.class));
-
+		
 		return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
 
 	}
@@ -112,8 +113,16 @@ public class UserController {
 
 	@PostMapping("/uploadImgUser")
 	public ResponseEntity<?> uploadImgUser(@RequestParam("image") MultipartFile file,
-			@RequestParam(value = "email") String email) {
+			Authentication authentication) {
 
+		String email = null;
+		try {
+			email = authentication.getName();
+		} catch(Exception e) {
+//			e.printStackTrace();
+			return new ResponseEntity<>(new ErrorDTO("Token required"), HttpStatus.FORBIDDEN);
+		}
+						
 		if(file.getSize() == 0) {
 			return new ResponseEntity<>(new ErrorDTO("File cannot be null."),
 					HttpStatus.BAD_REQUEST);
@@ -129,9 +138,10 @@ public class UserController {
 					HttpStatus.BAD_REQUEST);
 		}
 
-		String pathImg = FilesUtils.immagazzinaImg(file);
-
 		User user = userRepo.findByEmail(email);
+
+		String pathImg = FilesUtils.immagazzinaImg(file, user.getId());
+
 		user.setAvatar(pathImg);
 
 		userRepo.save(user);

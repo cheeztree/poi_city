@@ -7,6 +7,6 @@ public interface UserService {
 	User updateUser(UserDTO userDTO);
 	void saveUser(User user);
 	User findByEmail(String email);
-	void save(User user);
+	User save(User user);
 	boolean existsByEmail(String email);
 }

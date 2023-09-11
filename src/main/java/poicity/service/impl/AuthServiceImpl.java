@@ -26,6 +26,7 @@ import poicity.service.AuthService;
 import poicity.service.CustomUserDetailsService;
 import poicity.service.JwtService;
 import poicity.service.UserService;
+import poicity.utils.FilesUtils;
 import poicity.utils.PasswordGenerator;
 
 @Service
@@ -65,8 +66,16 @@ public class AuthServiceImpl implements AuthService{
 		user.setRoles(asd);
 		
 //		userService.saveUser(user);
-		userService.save(user);
-
+		User userNew = userService.save(user);
+		
+		if(userNew.getAvatar() != null) {
+			if (userNew.getAvatar().equals("") || userNew.getAvatar().equals("string")) {
+				userNew.setAvatar(FilesUtils.immagazzinaAvatarDefault2(userNew.getId()));
+			}
+		} else {
+			userNew.setAvatar(FilesUtils.immagazzinaAvatarDefault2(userNew.getId()));
+		}
+		
 		return AuthResponse.builder().token(jwtService.getToken(user)).build();
 	}
 

@@ -1,6 +1,7 @@
 package poicity.controller;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,8 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.jsonwebtoken.MalformedJwtException;
+
+import org.springframework.security.core.Authentication;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +33,6 @@ import poicity.service.AuthService;
 import poicity.service.JwtService;
 import poicity.service.LanguageService;
 import poicity.service.UserService;
-import poicity.utils.FilesUtils;
 import poicity.utils.JavaMail;
 import poicity.utils.PasswordGenerator;
 
@@ -67,7 +72,7 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public ResponseEntity<Object> register(@RequestBody UserDTO request) {
-//		System.out.println(request);
+		
 		if (userRepo.existsByEmail(request.getEmail())) {
 			return new ResponseEntity<Object>(
 					new ErrorDTO("User with email '" + request.getEmail() + "' already exists."), HttpStatus.CONFLICT);
@@ -78,14 +83,9 @@ public class AuthController {
 					new ErrorDTO("Language with id '" + request.getLang_id() + "' doesn't exists."),
 					HttpStatus.BAD_REQUEST);
 		}
+		
+		
 
-		if(request.getAvatar() != null) {
-			if (request.getAvatar().equals("") || request.getAvatar().equals("string")) {
-				request.setAvatar(FilesUtils.immagazzinaAvatarDefault2());
-			}
-		} else {
-			request.setAvatar(FilesUtils.immagazzinaAvatarDefault2());
-		}
 
 		try {
 			return ResponseEntity.ok(authService.register(request));
@@ -138,5 +138,30 @@ public class AuthController {
 		}
 
 	}
+	
+	@PostMapping("checkToken")
+	public boolean checkToken(@RequestHeader Map<String, String> headers, Authentication authentication) {
+
+		String tokenHeader = headers.get("authorization");
+//		System.out.println(headers);
+//		System.out.println(tokenHeader.length());
+
+		if(tokenHeader == null) {
+			return false;
+		}
+		if(tokenHeader.length() != 166) {
+			//MI ROMPO QUI
+			return false;
+		}
+		try {
+			String email = authentication.getName();
+			
+			return true;
+		} catch(Exception e) {
+//			e.printStackTrace();
+			return false;
+		}
+	}
+	
 
 }
