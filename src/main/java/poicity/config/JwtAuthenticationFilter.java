@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,14 +31,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		
 		final String token = getTokenFromRquest(request);
-		final String username;
+		String username = null;
 		
 		if(token == null){
 			filterChain.doFilter(request, response);
 			return;
 		}
 		
-		username = jwtService.getUsernameFromToken(token);
+		try {
+			username = jwtService.getUsernameFromToken(token);
+		} catch(MalformedJwtException e) {
+			System.err.println("Token format is not correct");
+		} catch(SignatureException e) {
+//			e.printStackTrace();
+			System.err.println("JWT signature does not match locally computed signature.");
+		}
 		
 		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);

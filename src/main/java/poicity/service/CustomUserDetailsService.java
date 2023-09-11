@@ -38,18 +38,39 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
     
-    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByEmail(String email) {
 
         User user = userRepository.findByEmail(email);
-        if(user != null){
+        
+        try{
+
             return new org.springframework.security.core.userdetails.User(user.getEmail()
                     , user.getPassword(),
                     user.getRoles().stream()
                             .map((role) -> new SimpleGrantedAuthority(role.getName()))
                             .collect(Collectors.toList()));
 
-        }else {
-            throw new UsernameNotFoundException("Invalid email or password");
+        
+        } catch (Exception e) {
+//        	e.printStackTrace();
+//        	System.err.println("Invalid email");
+        	return null;
         }
+
     }
+    
+//    public UserDetails loadUserByEmail(String email) {
+//
+//        User user = userRepository.findByEmail(email);
+//        if(user != null){
+//            return new org.springframework.security.core.userdetails.User(user.getEmail()
+//                    , user.getPassword(),
+//                    user.getRoles().stream()
+//                            .map((role) -> new SimpleGrantedAuthority(role.getName()))
+//                            .collect(Collectors.toList()));
+//
+//        }else {
+//            throw new UsernameNotFoundException("Invalid email or password");
+//        }
+//    }
 }

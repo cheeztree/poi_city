@@ -2,16 +2,25 @@ package poicity.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import poicity.dto.LanguageDTO;
 import poicity.entity.Language;
 import poicity.repository.LanguageRepository;
 import poicity.repository.LanguageTextRepository;
+import poicity.service.CustomUserDetailsService;
+import poicity.service.JwtService;
 import poicity.service.LanguageService;
+import poicity.service.UserService;
 
 @Service
+@RequiredArgsConstructor
 public class LanguageServiceImpl implements LanguageService {
 
 	@Autowired
