@@ -66,15 +66,17 @@ public class AuthServiceImpl implements AuthService{
 		user.setRoles(asd);
 		
 //		userService.saveUser(user);
-		User userNew = userService.save(user);
-		
-		if(userNew.getAvatar() != null) {
-			if (userNew.getAvatar().equals("") || userNew.getAvatar().equals("string")) {
-				userNew.setAvatar(FilesUtils.immagazzinaAvatarDefault2(userNew.getId()));
+//		User userNew = userService.save(user);
+
+		if(request.getAvatar() != null) {
+			if (request.getAvatar().equals("") || request.getAvatar().equals("string")) {
+				user.setAvatar(FilesUtils.immagazzinaAvatarDefault2(user.getId()));
 			}
 		} else {
-			userNew.setAvatar(FilesUtils.immagazzinaAvatarDefault2(userNew.getId()));
+			user.setAvatar(FilesUtils.immagazzinaAvatarDefault2(user.getId()));
 		}
+		
+		userService.save(user);
 		
 		return AuthResponse.builder().token(jwtService.getToken(user)).build();
 	}

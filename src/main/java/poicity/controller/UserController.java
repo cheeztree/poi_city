@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ public class UserController {
 	private MyMapper mapper;
 	private UserRepository userRepo;
 	private RoleRepository roleRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@PostMapping("create")
 	public ResponseEntity<UserDTO> add(@RequestBody UserDTO userDTO) {
@@ -83,17 +85,33 @@ public class UserController {
 	}
 
 	@PutMapping("update")
-	public ResponseEntity<User> update(@RequestBody User user) {
+	public ResponseEntity<?> update(@RequestBody User user, Authentication authentication) {
 
-		boolean esiste = userRepo.existsById(user.getId());
+		String email = null;
+		
+		try {
+			email = authentication.getName();
+			User userFromDB = userRepo.findByEmail(email);
+			boolean esiste = userRepo.existsById(userFromDB.getId());
+			
+			if (esiste) {
+				userFromDB.setUsername(user.getUsername());
+				userFromDB.setName(user.getName());
+				userFromDB.setLastname(user.getLastname());
+				userFromDB.setPassword(passwordEncoder.encode(user.getPassword()));
 
-		if (esiste) {
-			userRepo.save(user);
+				userRepo.save(userFromDB);
 
-			return new ResponseEntity<>(user, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(user, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} catch(Exception e) {
+//			e.printStackTrace();
+			return new ResponseEntity<>(new ErrorDTO("Token not valid."), HttpStatus.NOT_FOUND);
 		}
+		
+
 
 	}
 

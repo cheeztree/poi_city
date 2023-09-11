@@ -149,10 +149,10 @@ public class AuthController {
 		if(tokenHeader == null) {
 			return false;
 		}
-		if(tokenHeader.length() != 166) {
-			//MI ROMPO QUI
-			return false;
-		}
+//		if(tokenHeader.length() != 166) {
+//			//MI ROMPO QUI
+//			return false;
+//		}
 		try {
 			String email = authentication.getName();
 			
