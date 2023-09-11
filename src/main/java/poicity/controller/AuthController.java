@@ -83,9 +83,6 @@ public class AuthController {
 					new ErrorDTO("Language with id '" + request.getLang_id() + "' doesn't exists."),
 					HttpStatus.BAD_REQUEST);
 		}
-		
-		
-
 
 		try {
 			return ResponseEntity.ok(authService.register(request));
@@ -155,7 +152,7 @@ public class AuthController {
 //		}
 		try {
 			String email = authentication.getName();
-			
+
 			return true;
 		} catch(Exception e) {
 //			e.printStackTrace();

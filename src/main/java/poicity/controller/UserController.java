@@ -111,8 +111,6 @@ public class UserController {
 			return new ResponseEntity<>(new ErrorDTO("Token not valid."), HttpStatus.NOT_FOUND);
 		}
 		
-
-
 	}
 
 	@DeleteMapping("delete")
