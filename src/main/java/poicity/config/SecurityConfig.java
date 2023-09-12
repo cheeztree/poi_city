@@ -2,10 +2,11 @@ package poicity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -33,8 +34,10 @@ public class SecurityConfig {
 			//					.requestMatchers(HttpMethod.POST, "/**").permitAll().requestMatchers(HttpMethod.GET, "/**")
 			//					.permitAll().requestMatchers(HttpMethod.PUT, "/**").permitAll()
 			//					.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+			.requestMatchers("/main/resources/templates/**").permitAll() 
 
 			 .anyRequest().permitAll()
+			 
 //			.anyRequest().authenticated()
 
 			;
@@ -51,5 +54,12 @@ public class SecurityConfig {
 		return http.build();
 
 	}
+	
+	 @Bean
+	 public WebSecurityCustomizer ignoringCustomizer() {
+	     return (web) -> web.ignoring().requestMatchers("/src/main/resources/templates/**");
+	 }
 
+
+	
 }

@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -83,7 +84,10 @@ public class ApplicationConfig {
 	    
 	}
 
-	
+//	@Override
+//	public void configure(WebSecurity web) throws Exception {
+//	  web.ignoring().requestMatchers("/static/**");
+//	}
 //	  @Bean
 //	  public CorsFilter corsFilter() {
 //

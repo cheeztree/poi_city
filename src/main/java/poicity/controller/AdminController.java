@@ -33,7 +33,8 @@ public class AdminController {
 	private PasswordEncoder passwordEncoder;
 
     @GetMapping
-    public String index() {
+    public String index(Model model) {
+    	model.addAttribute("chiave", "valore");
         return "admin_login";
     }
     

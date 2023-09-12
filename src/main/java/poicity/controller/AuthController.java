@@ -83,6 +83,11 @@ public class AuthController {
 					new ErrorDTO("Language with id '" + request.getLang_id() + "' doesn't exists."),
 					HttpStatus.BAD_REQUEST);
 		}
+		
+		if(userRepo.existsByUsername(request.getUsername())) {
+			return new ResponseEntity<Object>(
+					new ErrorDTO("Username '" + request.getUsername() + "' already exists."), HttpStatus.NOT_ACCEPTABLE);	
+		}
 
 		try {
 			return ResponseEntity.ok(authService.register(request));
@@ -105,7 +110,7 @@ public class AuthController {
 
 			userRepo.save(user);
 
-			JavaMail.mandaEmailXresetPass2(user.getEmail(), newPassword, user.getName());
+			JavaMail.mandaEmailXresetPass2(user, newPassword);
 
 		} else {
 			return new ResponseEntity<Object>(new ErrorDTO("User with this email doesn't exists."),
