@@ -14,9 +14,5 @@ public class NotFoundController implements ErrorController{
         return "error404";
     }
     
-    @GetMapping("/style")
-    public String style() {
-        return "style404";
-    }
 	
 }

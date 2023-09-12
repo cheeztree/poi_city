@@ -50,13 +50,13 @@ public class UserTagsController {
 		}
 	}
 
-//	@GetMapping("/getByLang")
-//	public ResponseEntity<Object> getByLang(Authentication authentication) {
-//		if (authentication != null) {
-//			return new ResponseEntity<>(service.findByEmail(authentication.getName()), HttpStatus.OK);
-//		} else {
-//			return new ResponseEntity<>(new ErrorDTO("Authentication not valid"), HttpStatus.UNAUTHORIZED);
-//		}
-//	}
+	@GetMapping("/getByLang")
+	public ResponseEntity<Object> getByLang(Authentication authentication) {
+		if (authentication != null) {
+			return new ResponseEntity<>(service.getByLang(authentication.getName()), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(new ErrorDTO("Authentication not valid"), HttpStatus.UNAUTHORIZED);
+		}
+	}
 
 }

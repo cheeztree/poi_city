@@ -1,5 +1,7 @@
 package poicity.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,4 +19,7 @@ public interface UserTagsRepository extends JpaRepository<UserTags, Long>{
 //			+ "FROM users_tags\r\n"
 //			+ "where id_user = 1)")
 //	UserTagsDTO findUserTagsByUserId();
+	
+	
+	
 }

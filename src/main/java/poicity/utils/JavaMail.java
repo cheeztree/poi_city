@@ -122,6 +122,7 @@ public class JavaMail {
 			}
 			in.close();
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		String content = contentBuilder.toString();
 		if (nomeUtente != null) {
