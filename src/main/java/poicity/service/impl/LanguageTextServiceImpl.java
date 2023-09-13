@@ -26,7 +26,12 @@ public class LanguageTextServiceImpl implements LanguageTextService{
 		
 		List<LanguageTextDTO> listDTO = new ArrayList<>();
 		for(LanguageText langText : listAll) {
-			listDTO.add(mapper.langTextToLangTextDTO(langText));
+//			listDTO.add(mapper.langTextToLangTextDTO(langText));
+			LanguageTextDTO ltDTO = new LanguageTextDTO();
+			ltDTO.setId_element(langText.getIdElement());
+			ltDTO.setText(langText.getText());
+			
+			listDTO.add(ltDTO);
 		}
 		
 		return listDTO;
