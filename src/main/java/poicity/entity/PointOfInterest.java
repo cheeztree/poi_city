@@ -1,12 +1,15 @@
 package poicity.entity;
 
+import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,4 +38,16 @@ public class PointOfInterest {
     @JoinColumn(name="id_city", referencedColumnName = "id")
     private City city;
     
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_poi", referencedColumnName = "id")
+	private List<PointOfInterestImage> poi;
+    
+//    @OneToMany(cascade = CascadeType.MERGE)
+//    @JoinColumn(name="id_poi", referencedColumnName = "id")
+//    private PointOfInterestImage poiImg;
+    
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "poi_img")
+//    private List<String> PathImgPoi;
+
 }

@@ -1,9 +1,10 @@
 package poicity.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import poicity.entity.City;
 
 @Data
 @NoArgsConstructor
@@ -12,9 +13,8 @@ public class PointOfInterestDTO {
 
     private Long id;
     private String name;
-	private double latitude;
-	private double longitude;
 	private String description;
-    private City city;
+    private long id_city;
+    private List<Long> id_img;
     
 }
