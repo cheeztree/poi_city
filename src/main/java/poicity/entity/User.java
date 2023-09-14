@@ -53,7 +53,7 @@ public class User {
     
     private String avatar;
     
-    @OneToMany(mappedBy= "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private Set<UsersPoisChoices> usersPoisChoices;
+    @OneToMany(mappedBy= "user", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private List<UsersPoisChoices> usersPoisChoices;
     
 }

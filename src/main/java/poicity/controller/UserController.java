@@ -29,6 +29,7 @@ import poicity.entity.User;
 import poicity.mapper.MyMapper;
 import poicity.repository.RoleRepository;
 import poicity.repository.UserRepository;
+import poicity.service.UserService;
 import poicity.utils.FilesUtils;
 
 @RestController
@@ -38,6 +39,7 @@ public class UserController {
 
 	private MyMapper mapper;
 	private UserRepository userRepo;
+	private UserService userService;
 	private RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 
@@ -186,9 +188,9 @@ public class UserController {
 		User user;
 
 		try {
-			user = userRepo.findById(UserId).get();
+			user = userService.findById(UserId);
 		} catch (Exception e) {
-//    		e.printStackTrace();
+    		e.printStackTrace();
 			
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.setContentType(new MediaType("application", "json"));

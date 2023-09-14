@@ -1,5 +1,6 @@
 package poicity.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -31,7 +32,7 @@ public class PoiChoices {
     @Column(columnDefinition="varchar(20)", unique=true)
     private String choice;
     
-    @OneToMany(mappedBy = "poiChoices", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private Set<UsersPoisChoices> usersPoisChoices;
+    @OneToMany(mappedBy = "poiChoices", cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private List<UsersPoisChoices> usersPoisChoices;
     
 }

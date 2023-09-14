@@ -46,5 +46,5 @@ public class PointOfInterest {
 	private List<PointOfInterestImage> poi;
     
     @OneToMany(mappedBy = "poi",cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private Set<UsersPoisChoices> usersPoisChoices;
+    private List<UsersPoisChoices> usersPoisChoices;
 }

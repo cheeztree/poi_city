@@ -50,14 +50,13 @@ public class PointOfInterestController {
 			return new ResponseEntity<>(new ErrorDTO("Email not valid."), HttpStatus.NOT_FOUND);
 		}
 		
-		
 		UsersPoisChoices upc = new UsersPoisChoices();
 		try {
 			upc.setUser(user);
 			upc.setPoi(poiRepo.findById(dto.getId_poi()).get());
 			upc.setPoiChoices(poiChoicesRepo.findById(dto.getId_poi_choices()).get());
 		} catch(Exception e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorDTO("Some id is not valid."), HttpStatus.NOT_FOUND);
 		}
 		

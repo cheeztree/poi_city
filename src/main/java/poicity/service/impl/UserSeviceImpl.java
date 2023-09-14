@@ -3,6 +3,8 @@ package poicity.service.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import poicity.dto.UserDTO;
 import poicity.entity.Role;
@@ -24,6 +26,12 @@ public class UserSeviceImpl implements UserService {
 	@Autowired
 	private RoleRepository roleRepository;
 
+	@Override
+//    @Transactional(propagation=Propagation.REQUIRED, readOnly=true)
+	public User findById(long id) {
+		return userRepo.findById(id);
+	}
+	
 	@Override
 	public User updateUser(UserDTO userDTO) {
 		User user = mapper.map(userDTO, User.class);
