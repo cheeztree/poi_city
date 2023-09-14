@@ -44,7 +44,7 @@ public class ImagesController {
 			
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 			System.err.println("Poi image with id '" + id_poi_img + "' not found.");
 			return new ResponseEntity<>(new ErrorDTO("Poi image with id '" + id_poi_img + "' not found."), HttpStatus.NOT_FOUND);
 

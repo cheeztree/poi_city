@@ -14,7 +14,8 @@ public class PointOfInterestDTO {
     private Long id;
     private String name;
 	private String description;
-    private long id_city;
+	private double rating;
+	private long id_city;
     private List<Long> id_img;
     
 }

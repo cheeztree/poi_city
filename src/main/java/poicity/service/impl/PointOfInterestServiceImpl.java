@@ -28,6 +28,7 @@ public class PointOfInterestServiceImpl implements PointOfInterestService{
 			poiDTO.setId(poi.getId());
 			poiDTO.setName(poi.getName());
 			poiDTO.setDescription(poi.getDescription());
+			poiDTO.setRating(poi.getRating());
 			poiDTO.setId_city(poi.getCity().getId());
 			
 			List<Long> id_img = new ArrayList<>();

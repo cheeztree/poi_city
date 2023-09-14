@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -50,12 +51,9 @@ public class User {
     @JoinColumn(name="id_lang", referencedColumnName = "id")
     private Language lang;
     
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name = "users_pois",
-        joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id_poi", referencedColumnName = "id")
-    )
-    private Set<PointOfInterest> pois;
-
     private String avatar;
+    
+    @OneToMany(mappedBy= "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private Set<UsersPoisChoices> usersPoisChoices;
+    
 }

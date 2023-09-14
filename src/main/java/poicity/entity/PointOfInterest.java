@@ -1,6 +1,8 @@
 package poicity.entity;
 
 import java.util.List;
+import java.util.Set;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,6 +35,7 @@ public class PointOfInterest {
 	private double latitude;
 	private double longitude;
 	private String description;
+	private double rating;
 	
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="id_city", referencedColumnName = "id")
@@ -42,12 +45,6 @@ public class PointOfInterest {
 	@JoinColumn(name = "id_poi", referencedColumnName = "id")
 	private List<PointOfInterestImage> poi;
     
-//    @OneToMany(cascade = CascadeType.MERGE)
-//    @JoinColumn(name="id_poi", referencedColumnName = "id")
-//    private PointOfInterestImage poiImg;
-    
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @CollectionTable(name = "poi_img")
-//    private List<String> PathImgPoi;
-
+    @OneToMany(mappedBy = "poi",cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private Set<UsersPoisChoices> usersPoisChoices;
 }
