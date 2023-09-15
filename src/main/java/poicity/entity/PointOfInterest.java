@@ -1,8 +1,6 @@
 package poicity.entity;
 
 import java.util.List;
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,23 +26,33 @@ import lombok.ToString;
 @Table(name = "poi")
 public class PointOfInterest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+//    @OneToOne
+//    private Coordinates coordinates;
 	private double latitude;
 	private double longitude;
 	private String description;
 	private double rating;
-	
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name="id_city", referencedColumnName = "id")
-    private City city;
-    
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "id_city", referencedColumnName = "id")
+	@ToString.Exclude
+	private City city;
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_poi", referencedColumnName = "id")
+	@ToString.Exclude
 	private List<PointOfInterestImage> poi;
-    
-    @OneToMany(mappedBy = "poi",cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private List<UsersPoisChoices> usersPoisChoices;
+
+	@OneToMany(mappedBy = "poi", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ToString.Exclude
+	private List<UsersPoisChoices> usersPoisChoices;
+
+//	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+//	@JoinColumn(name = "id_poi", referencedColumnName = "id")
+//	private List<PoiTime> poiTime;
+
 }

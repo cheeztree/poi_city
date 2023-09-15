@@ -1,5 +1,6 @@
 package poicity.mapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -7,9 +8,12 @@ import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import poicity.dto.LanguageTextDTO;
+import poicity.dto.PointOfInterestDTO;
 import poicity.dto.UserDTO;
 import poicity.dto.UserTagsDTO;
 import poicity.entity.LanguageText;
+import poicity.entity.PointOfInterest;
+import poicity.entity.PointOfInterestImage;
 import poicity.entity.User;
 import poicity.entity.UserTags;
 
@@ -45,5 +49,26 @@ public class MyMapper extends ModelMapper{
 		}
 
 		return map;
+	}
+	
+	public PointOfInterestDTO poiToPoiDTO(PointOfInterest poi) {
+		
+		PointOfInterestDTO poiDTO = new PointOfInterestDTO();
+		
+		poiDTO.setId(poi.getId());
+		poiDTO.setName(poi.getName());
+		poiDTO.setDescription(poi.getDescription());
+		poiDTO.setLatitude(poi.getLatitude());
+		poiDTO.setLongitude(poi.getLongitude());
+		poiDTO.setRating(poi.getRating());
+		poiDTO.setId_city(poi.getCity().getId());
+		
+		List<Long> id_img = new ArrayList<>();
+		for(PointOfInterestImage poiImg : poi.getPoi()) {
+			id_img.add(poiImg.getId());
+		}
+		poiDTO.setId_img(id_img);
+		
+		return poiDTO;
 	}
 }

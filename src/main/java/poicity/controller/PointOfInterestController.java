@@ -1,5 +1,9 @@
 package poicity.controller;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import poicity.dto.ErrorDTO;
 import poicity.dto.PointOfInterestDTO;
 import poicity.dto.UsersPoisChoicesDTO;
+import poicity.entity.PoiTime;
 import poicity.entity.PointOfInterest;
 import poicity.entity.User;
 import poicity.entity.UsersPoisChoices;
+import poicity.entity.others.DAYS_OF_THE_WEEK;
+import poicity.entity.others.DaysWeek;
 import poicity.repository.PoiChoicesRepository;
+import poicity.repository.PoiTimeRepository;
 import poicity.repository.PointOfInterestRepository;
 import poicity.repository.UsersPoisChoicesRepository;
 import poicity.service.PointOfInterestService;
@@ -38,6 +46,8 @@ public class PointOfInterestController {
 	UsersPoisChoicesRepository upcRepo;
 	@Autowired
 	PoiChoicesRepository poiChoicesRepo;
+	@Autowired
+	PoiTimeRepository poiTimeRepo;
 	
 	@PostMapping("/save")
 	public ResponseEntity<?> save(Authentication authentication, @RequestBody UsersPoisChoicesDTO dto) {
@@ -88,6 +98,22 @@ public class PointOfInterestController {
 	
 	@GetMapping("/prova")
 	public String prova() {
+		PointOfInterest poi = poiRepo.findById(1L).get();
+		
+		PoiTime poiTime = new PoiTime();
+//		poiTime.setDays(Arrays.asList(DaysWeek.FRI, DaysWeek.SAT, DaysWeek.SUN));
+		poiTime.setDays(Arrays.asList(DaysWeek.WED));
+//		poiTime.setDay(DaysWeek.FRI);
+		poiTime.setLocalTime(LocalTime.of(12, 00, 00));
+		poiTime.setPoi(poi);
+//		;
+		System.out.println(poiTimeRepo.save(poiTime));
+
+//		System.out.println(poi);
+		
+//		System.out.println(poiTimeRepo.findAllByDays(DaysWeek.FRI));
+		System.out.println(poiTimeRepo.findasd(DaysWeek.WED));
+		
 		return "<!DOCTYPE html>\r\n"
 				+ "<html lang=\"en\">\r\n"
 				+ "<head>\r\n"
@@ -99,6 +125,8 @@ public class PointOfInterestController {
 				+ "    <div><a href=\"https://www.google.it/\" target=\"_blank\" rel=\"noopener\">LOREM IPSUM</a></div>\r\n"
 				+ "</body>\r\n"
 				+ "</html>";
+		
+		
 		
 	}
 	

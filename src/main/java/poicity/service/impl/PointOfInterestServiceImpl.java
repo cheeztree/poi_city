@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import poicity.dto.PointOfInterestDTO;
 import poicity.entity.PointOfInterest;
 import poicity.entity.PointOfInterestImage;
+import poicity.mapper.MyMapper;
 import poicity.repository.PointOfInterestRepository;
 import poicity.service.PointOfInterestService;
 
@@ -17,6 +18,8 @@ public class PointOfInterestServiceImpl implements PointOfInterestService{
 
 	@Autowired
 	PointOfInterestRepository poiRepo;
+	@Autowired
+	MyMapper mapper;
 	
 	@Override
 	public List<PointOfInterestDTO> findByCityId(long city_id) {
@@ -24,23 +27,15 @@ public class PointOfInterestServiceImpl implements PointOfInterestService{
 		List<PointOfInterestDTO> listPoiDTO = new ArrayList<PointOfInterestDTO>();
 		
 		for(PointOfInterest poi : listPoi) {
-			PointOfInterestDTO poiDTO = new PointOfInterestDTO();
-			poiDTO.setId(poi.getId());
-			poiDTO.setName(poi.getName());
-			poiDTO.setDescription(poi.getDescription());
-			poiDTO.setRating(poi.getRating());
-			poiDTO.setId_city(poi.getCity().getId());
-			
-			List<Long> id_img = new ArrayList<>();
-			for(PointOfInterestImage poiImg : poi.getPoi()) {
-				id_img.add(poiImg.getId());
-			}
-			poiDTO.setId_img(id_img);
-			
-			listPoiDTO.add(poiDTO);
+			listPoiDTO.add(mapper.poiToPoiDTO(poi));
 		}
 		
 		return listPoiDTO;
+	}
+
+	@Override
+	public PointOfInterest findById(long id) {
+		return poiRepo.findById(id).get();
 	}
 
 }
