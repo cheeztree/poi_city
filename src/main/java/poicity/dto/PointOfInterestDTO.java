@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import poicity.entity.PoiTime;
+import poicity.entity.others.PoiLinks;
 
 @Data
 @NoArgsConstructor
@@ -21,5 +23,7 @@ public class PointOfInterestDTO {
 	private double rating;
 	private long id_city;
     private List<Long> id_img;
+    private List<PoiLinks> poi_links;
+    private List<PoiTime> poi_orari;
     
 }

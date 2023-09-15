@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import poicity.entity.others.PoiLinks;
 
 @Setter
 @Getter
@@ -51,8 +52,12 @@ public class PointOfInterest {
 	@ToString.Exclude
 	private List<UsersPoisChoices> usersPoisChoices;
 
-//	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-//	@JoinColumn(name = "id_poi", referencedColumnName = "id")
-//	private List<PoiTime> poiTime;
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_poi", referencedColumnName = "id")
+	private List<PoiTime> poiTime;
+	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_poi", referencedColumnName = "id")
+	private List<PoiLinks> links;
 
 }

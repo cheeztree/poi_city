@@ -102,17 +102,21 @@ public class PointOfInterestController {
 		
 		PoiTime poiTime = new PoiTime();
 //		poiTime.setDays(Arrays.asList(DaysWeek.FRI, DaysWeek.SAT, DaysWeek.SUN));
-		poiTime.setDays(Arrays.asList(DaysWeek.WED));
+		poiTime.setDays(Arrays.asList(DaysWeek.THU));
 //		poiTime.setDay(DaysWeek.FRI);
-		poiTime.setLocalTime(LocalTime.of(12, 00, 00));
-		poiTime.setPoi(poi);
-//		;
-		System.out.println(poiTimeRepo.save(poiTime));
-
+		poiTime.setOpeningTime(LocalTime.of(8, 00, 00));
+		poiTime.setClosingTime(LocalTime.of(12, 00, 00));
+//		System.out.println(poiTimeRepo.save(poiTime));
+		
 //		System.out.println(poi);
 		
+		List<PoiTime> poiTimes = new ArrayList<>();
+		poiTimes.add(poiTime);
+		poi.setPoiTime(Arrays.asList(poiTimeRepo.save(poiTime)));
+		
+//		poiRepo.save(poi);
 //		System.out.println(poiTimeRepo.findAllByDays(DaysWeek.FRI));
-		System.out.println(poiTimeRepo.findasd(DaysWeek.WED));
+//		System.out.println(poiTimeRepo.findasd(DaysWeek.WED));
 		
 		return "<!DOCTYPE html>\r\n"
 				+ "<html lang=\"en\">\r\n"

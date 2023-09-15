@@ -38,7 +38,8 @@ public class PoiTime {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private LocalTime LocalTime;
+	private LocalTime openingTime;
+	private LocalTime closingTime;
 
 	@ElementCollection(targetClass = DaysWeek.class)
 	@JoinTable(name = "poi_time_days")
@@ -53,7 +54,7 @@ public class PoiTime {
 //    @Enumerated(EnumType.STRING)
 //	private DaysWeek day;
 
-	@ManyToOne
-	private PointOfInterest poi;
+//	@ManyToOne
+//	private PointOfInterest poi;
 
 }
