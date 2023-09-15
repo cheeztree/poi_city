@@ -69,6 +69,8 @@ public class MyMapper extends ModelMapper{
 		}
 		poiDTO.setId_img(list_id_img);
 		poiDTO.setPoi_links(poi.getLinks());
+		
+		
 		poiDTO.setPoi_orari(poi.getPoiTime());
 		
 		return poiDTO;

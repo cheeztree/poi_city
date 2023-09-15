@@ -1,5 +1,6 @@
 package poicity.controller;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,18 +103,20 @@ public class PointOfInterestController {
 		
 		PoiTime poiTime = new PoiTime();
 //		poiTime.setDays(Arrays.asList(DaysWeek.FRI, DaysWeek.SAT, DaysWeek.SUN));
-		poiTime.setDays(Arrays.asList(DaysWeek.THU));
+//		poiTime.setDays(Arrays.asList(DaysWeek.THU));
 //		poiTime.setDay(DaysWeek.FRI);
 		poiTime.setOpeningTime(LocalTime.of(8, 00, 00));
 		poiTime.setClosingTime(LocalTime.of(12, 00, 00));
-//		System.out.println(poiTimeRepo.save(poiTime));
+		poiTime.setDays(Arrays.asList(DayOfWeek.of(1), DayOfWeek.of(2), DayOfWeek.of(3)));
+		
+		System.out.println(poiTimeRepo.save(poiTime));
+		
+		poi.setPoiTime(Arrays.asList(poiTime));
+		
+		poiRepo.save(poi);
 		
 //		System.out.println(poi);
-		
-		List<PoiTime> poiTimes = new ArrayList<>();
-		poiTimes.add(poiTime);
-		poi.setPoiTime(Arrays.asList(poiTimeRepo.save(poiTime)));
-		
+	
 //		poiRepo.save(poi);
 //		System.out.println(poiTimeRepo.findAllByDays(DaysWeek.FRI));
 //		System.out.println(poiTimeRepo.findasd(DaysWeek.WED));

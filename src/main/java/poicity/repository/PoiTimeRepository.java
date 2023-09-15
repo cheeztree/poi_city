@@ -13,13 +13,10 @@ import poicity.entity.others.DaysWeek;
 @Repository
 public interface PoiTimeRepository extends JpaRepository<PoiTime, Integer> {
 
-//	PoiTime findByDaysWeek(DaysWeek day);
-//	List<PoiTime> findAllByDays(final DaysWeek daysWeek);
+
 	
-	@Query("SELECT p FROM PoiTime p WHERE :daysWeek member of p.days")
-	List<PoiTime> findasd(DaysWeek daysWeek);
+//	@Query("SELECT p FROM PoiTime p WHERE :daysWeek member of p.days")
+//	List<PoiTime> findasd(DaysWeek daysWeek);
 	
-//	@Query(nativeQuery = true, 
-//			value = "SELECT * FROM poi_time")
-//	List<PoiTime> findasd();
+
 }
