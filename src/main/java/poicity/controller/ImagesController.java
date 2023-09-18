@@ -66,7 +66,7 @@ public class ImagesController {
 	public ResponseEntity<?> getLogo() {
 		File file = new File(FilesUtils.verificaEcreaPathXlogo());
 		String extensionFile = FilenameUtils.getExtension(file.getPath());
-		System.out.println(extensionFile);
+//		System.out.println(extensionFile);
 
 		String pathLogo = FilesUtils.verificaEcreaPathXlogo();
 		

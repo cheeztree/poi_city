@@ -113,20 +113,18 @@ public class FilesUtils {
 	public static String verificaEcreaPathXlogo() {
 
 		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "/img/logo");
+		
 		File fileLogo = new File(pathXimg + "/logo.png");
 		File logoTmp = new File(pathXimg + "/logo.tmp");
-
-		try {
-			Files.createDirectories(pathXimg);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 //		String linkLogo = "https://i.ibb.co/c6GGm20/logo.png";
 		String linkLogo = ConfigIni.OnlineLinkLogo();
 
 		BufferedInputStream in = null;
+
 		try {
+			Files.createDirectories(pathXimg);
+
 			in = new BufferedInputStream(new URL(linkLogo).openStream());
 
 			Files.copy(in, Paths.get(pathXimg + "/logo.tmp"), StandardCopyOption.REPLACE_EXISTING);
