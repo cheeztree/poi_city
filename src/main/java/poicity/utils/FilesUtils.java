@@ -1,7 +1,7 @@
 package poicity.utils;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -9,8 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
-import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -113,80 +111,65 @@ public class FilesUtils {
 	}
 
 	public static String verificaEcreaPathXlogo() {
-		
-		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "\\img");
-		
+
+		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "/img/logo");
+		File fileLogo = new File(pathXimg + "/logo.png");
+		File logoTmp = new File(pathXimg + "/logo.tmp");
+
 		try {
 			Files.createDirectories(pathXimg);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		File fileTo = new File(pathXimg.toString() + "\\" + "logo.png");
-		String newPath = fileTo.getAbsolutePath();
 
-		if(!fileTo.exists()) {
-//			String linkLogo = "https://i.ibb.co/c6GGm20/logo.png";
-			String linkLogo = ConfigIni.OnlineLinkLogo();
-			BufferedInputStream in = null;
-			try {
-				in = new BufferedInputStream(new URL(linkLogo).openStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//		String linkLogo = "https://i.ibb.co/c6GGm20/logo.png";
+		String linkLogo = ConfigIni.OnlineLinkLogo();
 
-			try {
-				Files.copy(in, Paths.get(fileTo.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-
-//		verificaSeLogoCambiato();
-		
-		return newPath;
-
-	}
-
-	private static void verificaSeLogoCambiato() {
-
-		BufferedImage img1 = null;
-		BufferedImage img2 = null;
-		try {
-			img1 = ImageIO.read(new File("https://i.ibb.co/c6GGm20/logo.png"));
-			img2 = ImageIO.read(new File("src/main/java/utils/img/logo.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		String linkLogo = "https://i.ibb.co/c6GGm20/logo.png";
 		BufferedInputStream in = null;
 		try {
 			in = new BufferedInputStream(new URL(linkLogo).openStream());
+
+			Files.copy(in, Paths.get(pathXimg + "/logo.tmp"), StandardCopyOption.REPLACE_EXISTING);
+
+			if (!fileLogo.exists() || fileLogo.length() != logoTmp.length()) {
+				Files.copy(Paths.get(logoTmp.getPath()), Paths.get(fileLogo.getPath()),
+						StandardCopyOption.REPLACE_EXISTING);
+
+			}
+			
+			Files.delete(Paths.get(logoTmp.getPath()));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		if (img1.getWidth() == img2.getWidth() && img1.getHeight() == img2.getHeight()) {
-			for (int x = 0; x < img1.getWidth(); x++) {
-				for (int y = 0; y < img1.getHeight(); y++) {
-					if (img1.getRGB(x, y) != img2.getRGB(x, y))
-						System.out.println("NO");
+//		System.out.println(fileTo.length());
+//		System.out.println(logoTmp.length());
+//		System.out.println(fileLogo.exists());
 
-					// return false;
-				}
+
+		String newPath = fileLogo.getPath();
+
+		return newPath;
+	}
+
+	private static int getLength(BufferedInputStream in) {
+		int sizenew = 0;
+		try {
+
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = in.read(buf)) > 0) {
+
+				bos.write(buf, 0, len);
 			}
-		} else {
-			System.out.println("NO");
-
-//	        return false;
+			byte[] b = bos.toByteArray();
+			sizenew = b.length;
+		} catch (IOException e) {
+			System.err.println(e);
 		}
-		System.out.println("SI");
-//	     return true;
+		return sizenew;
 
 	}
 

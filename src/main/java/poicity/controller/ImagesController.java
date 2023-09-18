@@ -1,8 +1,11 @@
 package poicity.controller;
 
+import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -53,10 +56,18 @@ public class ImagesController {
 	}
 	
 	
-	@GetMapping(value = "/logo", produces = MediaType.IMAGE_PNG_VALUE)
+	@GetMapping(value = "/logo"
+//			, produces = MediaType.IMAGE_PNG_VALUE
+//			, produces = "image/*" //GENERA FILE .webp
+//			, produces = MediaType.ima
+
+			)
 	@Async
 	public ResponseEntity<?> getLogo() {
-		
+		File file = new File(FilesUtils.verificaEcreaPathXlogo());
+		String extensionFile = FilenameUtils.getExtension(file.getPath());
+		System.out.println(extensionFile);
+
 		String pathLogo = FilesUtils.verificaEcreaPathXlogo();
 		
 		try {
@@ -64,8 +75,16 @@ public class ImagesController {
 
 			byte[] bytes = StreamUtils.copyToByteArray(is);
 			is.close();
+			
+			HttpHeaders responseHeaders = new HttpHeaders();
+		    MediaType contentType = extensionFile.equals("jpg") ? MediaType.IMAGE_JPEG : MediaType.IMAGE_PNG;
+			responseHeaders.setContentType(contentType);
+			
+//			HttpHeaders responseHeaders = new HttpHeaders();
+//			responseHeaders.setContentType(new MediaType("img", "png"));
+			return new ResponseEntity<>(bytes, responseHeaders, HttpStatus.OK);
 
-			return new ResponseEntity<>(bytes, HttpStatus.OK);
+//			return new ResponseEntity<>(bytes, HttpStatus.OK);
 		} catch (Exception e) {
 //    		e.printStackTrace();
 
