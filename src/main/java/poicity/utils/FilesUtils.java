@@ -15,6 +15,8 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import poicity.ConfigIni;
+
 public class FilesUtils {
 
 	public static String immagazzinaImg(MultipartFile file, Long idUser) {
@@ -45,42 +47,42 @@ public class FilesUtils {
 		return newPath;
 	}
 
-	public static String immagazzinaAvatarDefault(Long idUser) {
-		String newPath = "";
-		File defaultAvatar = new File("src\\main\\java\\poicity\\utils\\img\\dafault_avatar.png");
-
-		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "\\img");
-
-		try {
-			Files.createDirectories(pathXimg);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-//		String nuovoNome = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSS"));
-		String nuovoNome = String.valueOf(idUser);
-		File fileTo = new File(
-				pathXimg.toString() + "\\" + nuovoNome + "." + FilenameUtils.getExtension(defaultAvatar.getName()));
-
-		try {
-			Files.copy(Paths.get(defaultAvatar.getAbsolutePath()), Paths.get(fileTo.getAbsolutePath()),
-					StandardCopyOption.REPLACE_EXISTING);
-			newPath = fileTo.getAbsolutePath();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return newPath;
-	}
+//	public static String immagazzinaAvatarDefault(Long idUser) {
+//		String newPath = "";
+//		File defaultAvatar = new File("src\\main\\java\\poicity\\utils\\img\\dafault_avatar.png");
+//
+//		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "\\img");
+//
+//		try {
+//			Files.createDirectories(pathXimg);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+////		String nuovoNome = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSS"));
+//		String nuovoNome = String.valueOf(idUser);
+//		File fileTo = new File(pathXimg.toString() + "\\" + nuovoNome + "." + FilenameUtils.getExtension(defaultAvatar.getName()));
+//
+//		try {
+//			Files.copy(Paths.get(defaultAvatar.getAbsolutePath()), Paths.get(fileTo.getAbsolutePath()),
+//					StandardCopyOption.REPLACE_EXISTING);
+//			newPath = fileTo.getAbsolutePath();
+//		} catch (IllegalStateException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		return newPath;
+//	}
 
 	public static String immagazzinaAvatarDefault2(Long idUser) {
 		String newPath = "";
 //		File defaultAvatar = new File("src\\main\\java\\poicity\\utils\\img\\dafault_avatar.png");
 		BufferedInputStream in = null;
 		try {
-			in = new BufferedInputStream(new URL("https://i.ibb.co/xGZtcXS/dafault-avatar.png").openStream());
+//			in = new BufferedInputStream(new URL("https://i.ibb.co/xGZtcXS/dafault-avatar.png").openStream());
+			in = new BufferedInputStream(new URL(ConfigIni.OnlineLinkDefaultAvatar()).openStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -124,7 +126,8 @@ public class FilesUtils {
 		String newPath = fileTo.getAbsolutePath();
 
 		if(!fileTo.exists()) {
-			String linkLogo = "https://i.ibb.co/c6GGm20/logo.png";
+//			String linkLogo = "https://i.ibb.co/c6GGm20/logo.png";
+			String linkLogo = ConfigIni.OnlineLinkLogo();
 			BufferedInputStream in = null;
 			try {
 				in = new BufferedInputStream(new URL(linkLogo).openStream());
