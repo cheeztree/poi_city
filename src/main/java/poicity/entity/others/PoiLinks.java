@@ -24,6 +24,7 @@ public class PoiLinks {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	private String testo;
 	private String link;
 	
 }
