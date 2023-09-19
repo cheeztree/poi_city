@@ -14,7 +14,7 @@
 		<div>
 			<img class="img-fluid" th:src="@{https://www.chogangroupspa.com/storage/img/logo_chogan.png}" />
 		</div>
-		<form th:action="@{/admin}" method="post" style="max-width: 350px; margin: 0 auto;">
+		<form th:action="@{/admin/login}" method="post" style="max-width: 350px; margin: 0 auto;">
 
 			<div class="alert" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
