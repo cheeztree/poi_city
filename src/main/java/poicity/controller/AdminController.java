@@ -1,6 +1,7 @@
 package poicity.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -131,53 +132,64 @@ public class AdminController {
 	}
 
 	@GetMapping("/panel")
-	public String panel(@CookieValue(value = "token", required = false) String token) {
+	public String panel(@CookieValue(value = "token", required = false) String token, Model model) {
 		if (token == null) {
-			System.out.println("TOKEN NULLO");
+			return "redirect:/admin?invalidAuthorization";
 		} else {
 //			System.out.println(token);
 
-			RestTemplate restTemplate = new RestTemplate();
-
-			HttpHeaders headers = new HttpHeaders();
-//			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.set("Authorization", "Bearer " + token);
+			if (!checkToken(token)) {
+				return "redirect:/admin?invalidAuthorization";
+			}
 			
-			Map<String, Object> map = new HashMap<>();
-
-			HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
-			System.out.println(entity);
 			
-			ResponseEntity<String> respEntity = restTemplate.exchange("http://localhost:8081/auth/checkToken",
-					HttpMethod.POST, entity, String.class);
-
-			System.out.println(respEntity);
-			System.out.println(respEntity.getBody());
-			
-//			String response = restTemplate.getForObject("http://localhost:8081/lang/getOnlyActive", String.class);
-//			System.out.println(response);
-
-			// String body = responseEntity.getBody();
-//			HttpHeaders headers = responseEntity.getHeaders();
-//			
-//			System.out.println(body);
-//			System.out.println(headers);
-
-//			HttpEntity<Foo> request = new HttpEntity<>();
-//			Foo foo = restTemplate.postForObject(fooResourceUrl, request, Foo.class);
-//			Assertions.assertNotNull(foo);
-//			Assertions.assertEquals(foo.getName(), "bar");
-
 		}
+		
+		List<User> listaUsers = userRepo.findAll();
+		System.out.println(listaUsers);
+		model.addAttribute("listaUsers", listaUsers);
+		
 		return "admin_panel";
 	}
 
-	@GetMapping("/getAllUsers")
-	public String getAllUsers(Model model) {
-		List<User> listUser = userRepo.findAll();
-		model.addAttribute("listUser", listUser);
+	private boolean checkToken(String token) {
+		RestTemplate restTemplate = new RestTemplate();
 
-		return "listaUsers";
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + token);
+
+		Map<String, Object> map = new HashMap<>();
+
+		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
+		System.out.println(entity);
+
+		ResponseEntity<String> respEntity = restTemplate.exchange("http://localhost:8081/auth/checkToken",
+				HttpMethod.POST, entity, String.class);
+
+//		System.out.println(respEntity);
+//		System.out.println(respEntity.getBody());
+
+		if (respEntity.getBody().equals("true")) {
+			return true;
+		}
+
+		return false;
+
 	}
+
+//	@GetMapping("admin_panel/getAllUsers")
+//	public String getAllUsers(Model model) {
+////		List<User> listaUsers = userRepo.findAll();
+//
+//		User user = new User();
+//		user.setName("AFFILA NOME");
+//		user.setUsername("AFFILA");
+//		user.setEmail("asd@asd.com");
+//		List<User> listaUsers = new ArrayList<>();
+//		listaUsers.add(user);
+//		System.out.println(listaUsers);
+//		model.addAttribute("listaUsers", listaUsers);
+//
+//		return "listaUsers";
+//	}
 }
