@@ -18,7 +18,7 @@ import poicity.entity.User;
 import poicity.entity.UserTags;
 
 public class MyMapper extends ModelMapper{
-    
+   
 	public UserDTO userToUserDTO(User user) {
 		UserDTO userDTO = map(user, UserDTO.class);
 		userDTO.setLang_id(user.getLang().getId());
@@ -74,5 +74,18 @@ public class MyMapper extends ModelMapper{
 		poiDTO.setPoi_orari(poi.getPoiTime());
 		
 		return poiDTO;
+	}
+	
+	public List<UserDTO> listUserToUserDTO(List<User> list){
+		List<UserDTO> listDTO = new ArrayList<>();
+		
+		for(User user : list) {
+			UserDTO userDTO = map(user, UserDTO.class);
+			userDTO.setLang_id(user.getLang().getId());
+			
+			listDTO.add(userDTO);
+		}
+		
+		return listDTO;
 	}
 }

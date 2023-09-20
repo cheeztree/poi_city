@@ -3,12 +3,15 @@ package poicity.controller;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StreamUtils;
@@ -47,11 +50,11 @@ public class UserController {
 	public ResponseEntity<UserDTO> add(@RequestBody UserDTO userDTO) {
 
 		User user = userRepo.save(mapper.map(userDTO, User.class));
-		
+
 		if (userDTO.getAvatar().equals("") || userDTO.getAvatar() == null || userDTO.getAvatar().equals("string")) {
 			userDTO.setAvatar(FilesUtils.immagazzinaAvatarDefault2(user.getId()));
 		}
-		
+
 		return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
 
 	}
@@ -78,24 +81,24 @@ public class UserController {
 		return new ResponseEntity<>(userDTO, HttpStatus.OK);
 	}
 
-	@GetMapping("getAll")
-	public ResponseEntity<List<User>> getAll() {
-		List<User> listaUser = userRepo.findAll();
-		System.out.println(roleRepository.findAll());
+	@GetMapping("/getAll")
+	@Async
+	public ResponseEntity<List<UserDTO>> getAll() {
 
-		return new ResponseEntity<>(listaUser, HttpStatus.OK);
+		return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+
 	}
 
 	@PutMapping("update")
 	public ResponseEntity<?> update(@RequestBody User user, Authentication authentication) {
 
 		String email = null;
-		
+
 		try {
 			email = authentication.getName();
 			User userFromDB = userRepo.findByEmail(email);
 			boolean esiste = userRepo.existsById(userFromDB.getId());
-			
+
 			if (esiste) {
 				userFromDB.setUsername(user.getUsername());
 				userFromDB.setName(user.getName());
@@ -108,11 +111,11 @@ public class UserController {
 			} else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 //			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorDTO("Token not valid."), HttpStatus.NOT_FOUND);
 		}
-		
+
 	}
 
 	@DeleteMapping("delete")
@@ -130,30 +133,27 @@ public class UserController {
 	}
 
 	@PostMapping("/uploadImgUser")
-	public ResponseEntity<?> uploadImgUser(@RequestParam("image") MultipartFile file,
-			Authentication authentication) {
+	public ResponseEntity<?> uploadImgUser(@RequestParam("image") MultipartFile file, Authentication authentication) {
 
 		String email = null;
 		try {
 			email = authentication.getName();
-		} catch(Exception e) {
+		} catch (Exception e) {
 //			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorDTO("Token required"), HttpStatus.FORBIDDEN);
 		}
-						
-		if(file.getSize() == 0) {
-			return new ResponseEntity<>(new ErrorDTO("File cannot be null."),
-					HttpStatus.BAD_REQUEST);
+
+		if (file.getSize() == 0) {
+			return new ResponseEntity<>(new ErrorDTO("File cannot be null."), HttpStatus.BAD_REQUEST);
 		}
-		
+
 		if (!userRepo.existsByEmail(email)) {
 			return new ResponseEntity<>(new ErrorDTO("User with email '" + email + "' already exists."),
 					HttpStatus.UNAUTHORIZED);
 		}
 
 		if (byteToMB(file.getSize()) > 5) {
-			return new ResponseEntity<>(new ErrorDTO("Files sizes limit is 5MB"), 
-					HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorDTO("Files sizes limit is 5MB"), HttpStatus.BAD_REQUEST);
 		}
 
 		User user = userRepo.findByEmail(email);
@@ -190,14 +190,15 @@ public class UserController {
 		try {
 			user = userService.findById(UserId);
 		} catch (Exception e) {
-    		e.printStackTrace();
-			
+			e.printStackTrace();
+
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.setContentType(new MediaType("application", "json"));
 
-			ResponseEntity<?> res = new ResponseEntity<>(new ErrorDTO("User not found."), responseHeaders, HttpStatus.NOT_FOUND);
+			ResponseEntity<?> res = new ResponseEntity<>(new ErrorDTO("User not found."), responseHeaders,
+					HttpStatus.NOT_FOUND);
 			return res;
-			
+
 		}
 
 		try {
@@ -218,7 +219,8 @@ public class UserController {
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.setContentType(new MediaType("application", "json"));
 
-			ResponseEntity<?> res = new ResponseEntity<>(new ErrorDTO("Image not found."), responseHeaders, HttpStatus.NOT_FOUND);
+			ResponseEntity<?> res = new ResponseEntity<>(new ErrorDTO("Image not found."), responseHeaders,
+					HttpStatus.NOT_FOUND);
 			return res;
 		}
 

@@ -1,9 +1,5 @@
 package poicity.controller;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,38 +8,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import poicity.dto.AuthResponse;
-import poicity.dto.ErrorDTO;
 import poicity.dto.LoginDTO;
 import poicity.entity.Role;
 import poicity.entity.User;
 import poicity.repository.RoleRepository;
 import poicity.repository.UserRepository;
 import poicity.service.AuthService;
-import poicity.service.CustomUserDetailsService;
-import poicity.service.JwtService;
 import poicity.service.UserService;
 
 @Controller
@@ -58,9 +42,6 @@ public class AdminController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	private final AuthService authService;
-	private final AuthenticationManager authenticationManager;
-	private final CustomUserDetailsService customUserDetailsService;
-	private final JwtService jwtService;
 	private final RoleRepository roleRepo;
 
 	@GetMapping
@@ -146,7 +127,7 @@ public class AdminController {
 		}
 		
 		List<User> listaUsers = userRepo.findAll();
-		System.out.println(listaUsers);
+//		System.out.println(listaUsers);
 		model.addAttribute("listaUsers", listaUsers);
 		
 		return "admin_panel";
@@ -161,7 +142,7 @@ public class AdminController {
 		Map<String, Object> map = new HashMap<>();
 
 		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
-		System.out.println(entity);
+//		System.out.println(entity);
 
 		ResponseEntity<String> respEntity = restTemplate.exchange("http://localhost:8081/auth/checkToken",
 				HttpMethod.POST, entity, String.class);

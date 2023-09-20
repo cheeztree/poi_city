@@ -9,18 +9,20 @@ import org.springframework.transaction.annotation.Transactional;
 import poicity.dto.UserDTO;
 import poicity.entity.Role;
 import poicity.entity.User;
+import poicity.mapper.MyMapper;
 //import org.springframework.security.core.userdetails.User;
 import poicity.repository.RoleRepository;
 import poicity.repository.UserRepository;
 import poicity.service.UserService;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class UserSeviceImpl implements UserService {
 
 	@Autowired
-	private ModelMapper mapper;
+	private MyMapper mapper;
 	@Autowired
 	private UserRepository userRepo;
 	@Autowired
@@ -78,6 +80,11 @@ public class UserSeviceImpl implements UserService {
 	@Override
 	public boolean existsByEmail(String email) {
 		return userRepo.existsByEmail(email);
+	}
+
+	@Override
+	public List<UserDTO> findAll() {
+		return mapper.listUserToUserDTO(userRepo.findAll());
 	}
 
 }
