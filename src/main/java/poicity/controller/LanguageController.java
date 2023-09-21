@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +42,10 @@ public class LanguageController {
 		return new ResponseEntity<>(listaLangs, HttpStatus.OK);
 	}
 
-//	@CrossOrigin
+	@CrossOrigin(exposedHeaders = {"Access-Control-Allow-Origin"})
 	@GetMapping("getOnlyActive")
 	public ResponseEntity<List<LanguageDTO>> getAll2() {
+		System.out.println("CIAO");
 		return new ResponseEntity<>(langService.getOnlyActive(), HttpStatus.OK);
 	}
 	

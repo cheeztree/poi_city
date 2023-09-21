@@ -20,10 +20,12 @@ import poicity.entity.UserTags;
 public class MyMapper extends ModelMapper{
    
 	public UserDTO userToUserDTO(User user) {
+		
 		UserDTO userDTO = map(user, UserDTO.class);
 		userDTO.setLang_id(user.getLang().getId());
 		
 		return userDTO;
+		
 	}
 	
 	public LanguageTextDTO langTextToLangTextDTO(LanguageText langText) {

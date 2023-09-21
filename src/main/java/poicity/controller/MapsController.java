@@ -18,4 +18,15 @@ public class MapsController {
 
         return "index";
     }
+    
+    @GetMapping("/prova2")
+    public String index2(ModelMap map) {
+    	
+    	map.addAttribute("affila", "affila123");
+    	map.addAttribute("lat", "41.31429");
+    	map.addAttribute("message", "hello11111111");
+
+        return "index";
+        
+    }
 }
