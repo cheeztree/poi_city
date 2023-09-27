@@ -42,7 +42,7 @@ public class LanguageController {
 		return new ResponseEntity<>(listaLangs, HttpStatus.OK);
 	}
 
-	@CrossOrigin(exposedHeaders = {"Access-Control-Allow-Origin"})
+//	@CrossOrigin(exposedHeaders = {"Access-Control-Allow-Origin"})
 	@GetMapping("getOnlyActive")
 	public ResponseEntity<List<LanguageDTO>> getAll2() {
 		System.out.println("CIAO");
@@ -58,6 +58,13 @@ public class LanguageController {
 		}
 	}
 	
-	
+//	@GetMapping("getLangFlag/{id}")
+//	public ResponseEntity<Object> getLangFlag(@PathVariable("id") Long id) {
+//		if(langService.existsById(id)) {
+//			return new ResponseEntity<>(langTextService.findByLangId(id), HttpStatus.OK);
+//		} else {
+//			return new ResponseEntity<Object>(new ErrorDTO(new Date(), "Language with id " + id + " doesn't exists."), HttpStatus.NOT_FOUND);
+//		}
+//	}
 
 }

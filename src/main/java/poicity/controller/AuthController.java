@@ -65,37 +65,38 @@ public class AuthController {
 				return new ResponseEntity<Object>(new ErrorDTO(new Date(), "Invalid password."), HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<Object>(new ErrorDTO(new Date(), request.getEmail() + "' doesn''t exists."),
+			return new ResponseEntity<Object>(new ErrorDTO(new Date(), "Email '" + request.getEmail() + "' doesn't exists."),
 					HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@PostMapping("/register")
 	public ResponseEntity<Object> register(@RequestBody UserDTO request) {
-		
+
 		if (userRepo.existsByEmail(request.getEmail())) {
 			return new ResponseEntity<Object>(
 					new ErrorDTO("User with email '" + request.getEmail() + "' already exists."), HttpStatus.CONFLICT);
 		}
-		
+
 		if (!langService.existsById(request.getLang_id())) {
 			return new ResponseEntity<Object>(
 					new ErrorDTO("Language with id '" + request.getLang_id() + "' doesn't exists."),
 					HttpStatus.BAD_REQUEST);
 		}
-		
-		if(userRepo.existsByUsername(request.getUsername())) {
-			return new ResponseEntity<Object>(
-					new ErrorDTO("Username '" + request.getUsername() + "' already exists."), HttpStatus.NOT_ACCEPTABLE);	
+
+		if (userRepo.existsByUsername(request.getUsername())) {
+			return new ResponseEntity<Object>(new ErrorDTO("Username '" + request.getUsername() + "' already exists."),
+					HttpStatus.NOT_ACCEPTABLE);
 		}
 
 		try {
 			return ResponseEntity.ok(authService.register(request));
-		} catch(ConstraintViolationException e) {
+		} catch (ConstraintViolationException e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<Object>(new ErrorDTO("'" + request.getEmail() + "' is not a valid mail."), HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<Object>(new ErrorDTO("'" + request.getEmail() + "' is not a valid mail."),
+					HttpStatus.NOT_ACCEPTABLE);
 		}
-		
+
 	}
 
 	@PostMapping("/resetPassword")
@@ -140,7 +141,7 @@ public class AuthController {
 		}
 
 	}
-	
+
 	@PostMapping("checkToken")
 	public boolean checkToken(@RequestHeader Map<String, String> headers, Authentication authentication) {
 
@@ -148,7 +149,7 @@ public class AuthController {
 //		System.out.println(headers);
 //		System.out.println(tokenHeader.length());
 
-		if(tokenHeader == null) {
+		if (tokenHeader == null) {
 			return false;
 		}
 //		if(tokenHeader.length() != 166) {
@@ -159,11 +160,10 @@ public class AuthController {
 			String email = authentication.getName();
 
 			return true;
-		} catch(Exception e) {
+		} catch (Exception e) {
 //			e.printStackTrace();
 			return false;
 		}
 	}
-	
 
 }

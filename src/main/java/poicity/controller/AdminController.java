@@ -73,10 +73,8 @@ public class AdminController {
 		if (userService.existsByEmail(loginDTO.getEmail())) {
 			User user = userService.findByEmail(loginDTO.getEmail());
 			Role roleAdmin = roleRepo.findByName("ADMIN");
-//			System.out.println(user);
-//			System.out.println(user.getRoles().contains(role));
 
-			if (!user.getRoles().contains(roleAdmin)) {
+			if (user.getRoles().contains(roleAdmin)) {
 				return "redirect:/admin?notAdmin";
 			}
 
@@ -144,7 +142,7 @@ public class AdminController {
 		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
 //		System.out.println(entity);
 
-		ResponseEntity<String> respEntity = restTemplate.exchange("http://localhost:8081/auth/checkToken",
+		ResponseEntity<String> respEntity = restTemplate.exchange("https://localhost:8081/auth/checkToken",
 				HttpMethod.POST, entity, String.class);
 
 //		System.out.println(respEntity);

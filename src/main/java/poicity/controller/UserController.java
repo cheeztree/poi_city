@@ -74,7 +74,7 @@ public class UserController {
 
 	}
 
-	@GetMapping("get")
+	@GetMapping("/get")
 	public ResponseEntity<UserDTO> get(Authentication authentication) {
 		UserDTO userDTO = mapper.userToUserDTO(userRepo.findByEmail(authentication.getName()));
 
@@ -90,7 +90,7 @@ public class UserController {
 	}
 
 	@PutMapping("update")
-	public ResponseEntity<?> update(@RequestBody User user, Authentication authentication) {
+	public ResponseEntity<?> update(@RequestBody UserDTO user, Authentication authentication) {
 
 		String email = null;
 
