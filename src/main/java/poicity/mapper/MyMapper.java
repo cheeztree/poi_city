@@ -65,17 +65,17 @@ public class MyMapper extends ModelMapper{
 		poiDTO.setRating(poi.getRating());
 		poiDTO.setId_city(poi.getCity().getId());
 		
-//		List<Long> list_id_img = new ArrayList<>();
-//		for(PointOfInterestImage poiImg : poi.getPoi()) {
-//			list_id_img.add(poiImg.getId());
-//		}
-//		poiDTO.setId_img(list_id_img);
-		
-		List<String> list_img = new ArrayList<>();
+		List<Long> list_id_img = new ArrayList<>();
 		for(PointOfInterestImage poiImg : poi.getPoi()) {
-			list_img.add(poiImg.getPathImgPoi());
+			list_id_img.add(poiImg.getId());
 		}
-		poiDTO.setImg_path(list_img);
+		poiDTO.setId_img(list_id_img);
+		
+//		List<String> list_img = new ArrayList<>();
+//		for(PointOfInterestImage poiImg : poi.getPoi()) {
+//			list_img.add(poiImg.getPathImgPoi());
+//		}
+//		poiDTO.setImg_path(list_img);
 		
 		poiDTO.setPoi_links(poi.getLinks());
 		poiDTO.setPoi_orari(poi.getPoiTime());

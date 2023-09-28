@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -89,7 +90,7 @@ public class UserController {
 
 	}
 
-	@PutMapping("update")
+	@PutMapping("/update")
 	public ResponseEntity<?> update(@RequestBody UserDTO user, Authentication authentication) {
 
 		String email = null;
@@ -103,8 +104,10 @@ public class UserController {
 				userFromDB.setUsername(user.getUsername());
 				userFromDB.setName(user.getName());
 				userFromDB.setLastname(user.getLastname());
-				userFromDB.setPassword(passwordEncoder.encode(user.getPassword()));
-
+				if(user.getPassword() != null) {
+					userFromDB.setPassword(passwordEncoder.encode(user.getPassword()));
+				}
+				
 				userRepo.save(userFromDB);
 
 				return new ResponseEntity<>(user, HttpStatus.OK);
@@ -112,7 +115,7 @@ public class UserController {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorDTO("Token not valid."), HttpStatus.NOT_FOUND);
 		}
 
@@ -164,7 +167,8 @@ public class UserController {
 
 		userRepo.save(user);
 
-		return new ResponseEntity<>(user, HttpStatus.OK);
+//		return new ResponseEntity<>(user, HttpStatus.OK);
+		return new ResponseEntity<>( HttpStatus.OK);
 	}
 
 	private double byteToMB(long bytes) {
@@ -172,13 +176,32 @@ public class UserController {
 		return MB;
 	}
 
-	@GetMapping(value = "/avatarByPath/{path}", produces = "image/*")
-	public ResponseEntity<byte[]> getImage(@PathVariable("path") String path) throws IOException {
+	@GetMapping(value = "/avatar"
+//			, produces = "image/*"
+			)
+	public ResponseEntity<?> getImage(Authentication authentication) throws IOException {
+				
+		String email = null;
+		try {
+			email = authentication.getName();
+		} catch (Exception e) {
+//			e.printStackTrace();
+			return new ResponseEntity<>(new ErrorDTO("Token required"), HttpStatus.FORBIDDEN);
+		}
+		
+		User user = userRepo.findByEmail(email);
 
-		InputStream is = new FileInputStream(path);
+		InputStream is = new FileInputStream(user.getAvatar());
 		byte[] bytes = StreamUtils.copyToByteArray(is);
+		is.close();
+		
+		String extensionFile = FilenameUtils.getExtension(user.getAvatar());
 
-		return new ResponseEntity<>(bytes, HttpStatus.OK);
+		HttpHeaders responseHeaders = new HttpHeaders();
+	    MediaType contentType = extensionFile.equals("jpg") ? MediaType.IMAGE_JPEG : MediaType.IMAGE_PNG;
+		responseHeaders.setContentType(contentType);
+		
+		return new ResponseEntity<>(bytes, responseHeaders, HttpStatus.OK);
 
 	}
 

@@ -22,8 +22,8 @@ public class PointOfInterestDTO {
 	private double longitude;
 	private double rating;
 	private long id_city;
-//    private List<Long> id_img;
-    private List<String> img_path;
+    private List<Long> id_img;
+//    private List<String> img_path;
     private List<PoiLinks> poi_links;
     private List<PoiTime> poi_orari;
     
