@@ -95,9 +95,18 @@ public class UserTagsServiceImpl implements UserTagsService{
 	public List<UserTagsDTO> getByLang(String email) {
 		User user = userRepo.findByEmail(email);
 		
+		List<LanguageText> list = langTextRepo.findByIdElementAndLang("pref", user.getLang());
+		List<UserTagsDTO> listUserDTO = new ArrayList<>();
 		
+		for(LanguageText lang : list) {
+			UserTagsDTO userTags = new UserTagsDTO();
+			userTags.setId(lang.getUserTags().getId());
+			userTags.setName(lang.getText());
+			
+			listUserDTO.add(userTags);
+		}
 		
-		return null;
+		return listUserDTO;
 	}
 	
 	
