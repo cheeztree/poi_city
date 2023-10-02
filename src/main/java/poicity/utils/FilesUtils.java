@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -113,7 +114,7 @@ public class FilesUtils {
 	public static String verificaEcreaPathXlogo() {
 
 		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "/img/logo");
-		
+
 		File fileLogo = new File(pathXimg + "/logo.png");
 		File logoTmp = new File(pathXimg + "/logo.tmp");
 
@@ -134,9 +135,12 @@ public class FilesUtils {
 						StandardCopyOption.REPLACE_EXISTING);
 
 			}
-			
+
 			Files.delete(Paths.get(logoTmp.getPath()));
-			
+
+		} catch (NoSuchFileException e) {
+//			NON SCARICA IL FILE IN TEMPO MA TUTTO OKAY
+//			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -144,7 +148,6 @@ public class FilesUtils {
 //		System.out.println(fileTo.length());
 //		System.out.println(logoTmp.length());
 //		System.out.println(fileLogo.exists());
-
 
 		String newPath = fileLogo.getPath();
 

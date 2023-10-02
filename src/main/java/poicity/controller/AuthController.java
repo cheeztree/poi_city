@@ -63,7 +63,7 @@ public class AuthController {
 	private LanguageService langService;
 	@Autowired
 	ImageService imageService;
-	
+
 	Logger log = LogManager.getLogger(AuthController.class);
 
 	@PostMapping("/login")
@@ -76,7 +76,8 @@ public class AuthController {
 				return new ResponseEntity<Object>(new ErrorDTO(new Date(), "Invalid password."), HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<Object>(new ErrorDTO(new Date(), "Email '" + request.getEmail() + "' doesn't exists."),
+			return new ResponseEntity<Object>(
+					new ErrorDTO(new Date(), "Email '" + request.getEmail() + "' doesn't exists."),
 					HttpStatus.NOT_FOUND);
 		}
 	}
@@ -96,15 +97,16 @@ public class AuthController {
 		}
 
 		if (userRepo.existsByUsername(request.getUsername())) {
-			return new ResponseEntity<Object>(new ErrorDTO("Username '" + request.getUsername() + "' already exists."),
-					HttpStatus.NOT_ACCEPTABLE);
+//			return new ResponseEntity<Object>(new ErrorDTO("Username '" + request.getUsername() + "' already exists."),
+			return new ResponseEntity<Object>(new ErrorDTO("Username already exists."), HttpStatus.NOT_ACCEPTABLE);
 		}
 
 		try {
 			return ResponseEntity.ok(authService.register(request));
 		} catch (ConstraintViolationException e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<Object>(new ErrorDTO("'" + request.getEmail() + "' is not a valid mail."),
+//			return new ResponseEntity<Object>(new ErrorDTO("'" + request.getEmail() + "' is not a valid mail."),
+			return new ResponseEntity<Object>(new ErrorDTO("Email is not valid."),
 					HttpStatus.NOT_ACCEPTABLE);
 		}
 
@@ -140,18 +142,17 @@ public class AuthController {
 		} else {
 			return false;
 		}
-		
+
 	}
 
 	@PostMapping("/changePassword")
-	public void changePassword(@RequestBody PasswordDTO password, Authentication authentication){
+	public void changePassword(@RequestBody PasswordDTO password, Authentication authentication) {
 		User user = userService.findByEmail(authentication.getName());
 		user.setPassword(passwordEncoder.encode(password.getPassword()));
 
 		userRepo.save(user);
 	}
-		
-	
+
 	@PostMapping("google")
 	public ResponseEntity<Object> google(@RequestBody GoogleLoginDTO login) {
 		User user = jwtService.decodeGoogleToken(login.getGoogleToken());
@@ -196,30 +197,30 @@ public class AuthController {
 			return false;
 		}
 	}
-	
-	@GetMapping(value = "/poi/{id_poi_img}"
-//			, produces = "image/*"
-			)
-	@Async
-	public ResponseEntity<?> getAvatar(
-			@PathVariable("id_poi_img") String id_poi_img
-			, HttpServletResponse response
-			) {
 
-		try {
-			InputStream resource = imageService.getPoiImgById(Long.parseLong(id_poi_img));
-			response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-			StreamUtils.copy(resource, response.getOutputStream());
-			resource.close();
-			
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Poi image with id '" + id_poi_img + "' not found.");
-			return new ResponseEntity<>(new ErrorDTO("Poi image with id '" + id_poi_img + "' not found."), HttpStatus.NOT_FOUND);
-
-		}
-	
-	}
+//	@GetMapping(value = "/poi/{id_poi_img}"
+////			, produces = "image/*"
+//			)
+//	@Async
+//	public ResponseEntity<?> getAvatar(
+//			@PathVariable("id_poi_img") String id_poi_img
+//			, HttpServletResponse response
+//			) {
+//
+//		try {
+//			InputStream resource = imageService.getPoiImgById(Long.parseLong(id_poi_img));
+//			response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+//			StreamUtils.copy(resource, response.getOutputStream());
+//			resource.close();
+//			
+//			return new ResponseEntity<>(HttpStatus.OK);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			System.err.println("Poi image with id '" + id_poi_img + "' not found.");
+//			return new ResponseEntity<>(new ErrorDTO("Poi image with id '" + id_poi_img + "' not found."), HttpStatus.NOT_FOUND);
+//
+//		}
+//	
+//	}
 
 }
