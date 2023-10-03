@@ -22,7 +22,7 @@ public class FilesUtils {
 		String newPath = "";
 
 //		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "\\img");
-		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "/img");
+		Path pathXimg = Paths.get("/img");
 
 		try {
 			Files.createDirectories(pathXimg);
