@@ -1,25 +1,35 @@
 package poicity;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Properties;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-
-//import springfox.documentation.builders.RequestHandlerSelectors;
-//import springfox.documentation.spi.DocumentationType;
-//import springfox.documentation.spring.web.plugins.Docket;
-//import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-//@EnableSwagger2
-public class Main {
+public class Main extends SpringBootServletInitializer  {
 
+//	@Override
+//	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+//		return application.sources(SpringCpanelApplication.class);
+//	}
+	
 	public static void main(String[] args) {
 		Properties props = getInit();
 
 		new SpringApplicationBuilder(Main.class).properties(props).run(args);
 
+//		try {
+//			String ip = InetAddress.getLocalHost().getHostAddress();
+//			System.out.println(ip);
+//		} catch (UnknownHostException e) {
+////			e.printStackTrace();
+//		}
+				
+		
 		System.out.println(" /**********************************************\\");
 		System.out.println("| ----------------SERVER AVVIATO---------------- |");
 		System.out.println(" \\**********************************************/");
