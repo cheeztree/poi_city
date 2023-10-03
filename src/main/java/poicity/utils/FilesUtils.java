@@ -21,7 +21,8 @@ public class FilesUtils {
 	public static String immagazzinaImg(MultipartFile file, Long idUser) {
 		String newPath = "";
 
-		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "\\img");
+//		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "\\img");
+		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "/img");
 
 		try {
 			Files.createDirectories(pathXimg);
