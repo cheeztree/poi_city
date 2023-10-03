@@ -64,7 +64,6 @@ public class ImagesController {
 
 			)
 	@Async
-//	@CrossOrigin(exposedHeaders = {"Access-Control-Allow-Origin"})
 	public ResponseEntity<?> getLogo() {
 		File file = new File(FilesUtils.verificaEcreaPathXlogo());
 		String extensionFile = FilenameUtils.getExtension(file.getPath());

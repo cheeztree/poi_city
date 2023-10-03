@@ -153,7 +153,7 @@ public class FilesUtils {
 //		System.out.println(fileLogo.exists());
 
 		String newPath = fileLogo.getPath();
-
+		System.out.println(newPath);
 		return newPath;
 	}
 
