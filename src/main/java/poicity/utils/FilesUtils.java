@@ -21,8 +21,7 @@ public class FilesUtils {
 	public static String immagazzinaImg(MultipartFile file, Long idUser) {
 		String newPath = "";
 		
-		String pathXimgS = new File("").getAbsolutePath() + "\\img";
-		pathXimgS = pathXimgS.replaceAll("\\\\|/", "\\" + System.getProperty("file.separator"));
+		String pathXimgS = new File("").getAbsolutePath() + "/img";
 		
 		Path pathXimg = Paths.get(pathXimgS);
 		
@@ -35,7 +34,7 @@ public class FilesUtils {
 //		String nuovoNome = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSS"));
 		String nuovoNome = String.valueOf(idUser);
 		File fileTo = new File(
-				pathXimg.toString() + "\\" + nuovoNome + "." + FilenameUtils.getExtension(file.getOriginalFilename()));
+				pathXimg.toString() + "/" + nuovoNome + "." + FilenameUtils.getExtension(file.getOriginalFilename()));
 
 		try {
 			file.transferTo(fileTo);
