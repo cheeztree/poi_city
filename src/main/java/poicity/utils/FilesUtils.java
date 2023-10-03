@@ -20,10 +20,12 @@ public class FilesUtils {
 
 	public static String immagazzinaImg(MultipartFile file, Long idUser) {
 		String newPath = "";
-
-//		Path pathXimg = Paths.get(new File("").getAbsolutePath() + "\\img");
-		Path pathXimg = Paths.get("/img");
-
+		
+		String pathXimgS = new File("").getAbsolutePath() + "\\img";
+		pathXimgS = pathXimgS.replaceAll("\\\\|/", "\\" + System.getProperty("file.separator"));
+		
+		Path pathXimg = Paths.get(pathXimgS);
+		
 		try {
 			Files.createDirectories(pathXimg);
 		} catch (IOException e) {
