@@ -13,7 +13,7 @@ import poicity.service.ImageService;
 @Service
 public class ImageServiceImpl implements ImageService{
 
-	String path = "C:\\Users\\Telsone\\Desktop\\imgPetruzzelli\\";
+	String path = "C:\\Users\\Telsone\\Desktop\\img_poi\\";
 
 	@Autowired
 	PointOfInterestImageRepository poiImgRepo;
